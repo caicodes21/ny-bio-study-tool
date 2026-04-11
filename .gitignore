@@ -3,3 +3,5 @@ frontend/node_modules
 backend/question-generation/official-materials
 backend/.env
 frontend/.env
+backend/.venv
+backend/__pycache__
