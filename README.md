@@ -17,7 +17,7 @@ The goal of this tool is to provide support for students through two main ways:
 | --------- | ----- |
 | Frontend | Vite, React |
 | Database | Neon (Postgres) |
-| Middle API Layer | Hono |
+| Middle API Layer | FastAPI |
 | Question Generation | LangChain, large language models |
 
 ## Planned Steps

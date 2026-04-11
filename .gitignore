@@ -1,3 +1,5 @@
 .DS_Store
 frontend/node_modules
-backend/node_modules
+backend/question-generation/official-materials
+backend/.env
+frontend/.env
