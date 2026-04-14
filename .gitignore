@@ -1,7 +1,9 @@
 .DS_Store
 frontend/node_modules
-backend/question-generation/official-materials
 backend/.env
 frontend/.env
 backend/.venv
-backend/__pycache__
+backend/chainlit-chatbot/__pycache__
+backend/database/official-clusters.json
+backend/database/standards.json
+backend/mcp_server/__pycache__

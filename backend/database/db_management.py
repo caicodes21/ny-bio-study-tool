@@ -1,12 +1,16 @@
 import os
-import psycopg
+import asyncio
+import asyncpg
 from dotenv import load_dotenv
-from psycopg import sql
+from pydantic import Field
+from typing import List
 
 load_dotenv()
-conn_string = os.getenv("DATABASE_URL")
+conn_string = os.getenv("PG_DB_URL")
 
-def drop_table(table_name: str):
+async def drop_table(
+        table_name: str = Field(description="Name of table to be dropped")
+    ) -> None:
     """
     Drops a table from the database if it exists.
 
@@ -14,16 +18,24 @@ def drop_table(table_name: str):
         table_name: The name of the table to drop.
     """
 
+    def quote_identifier(name: str) -> str:
+        """Safely quote a PostgreSQL identifier to prevent SQL injection."""
+        # Escape any double quotes within the name, then wrap in double quotes
+        return '"' + name.replace('"', '""') + '"'
+
     try:
-        with psycopg.connect(conn_string) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(sql.SQL("DROP TABLE IF EXISTS {}").format(sql.Identifier(table_name)))
-                conn.commit()
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.execute(f"DROP TABLE IF EXISTS {quote_identifier(table_name)};")
     except Exception as e:
         print("Failed to drop table.")
         print(e)
+    finally:
+        if conn:
+            await conn.close()
 
-def create_official_clusters_table():
+
+async def create_official_clusters_table() -> None:
     """
     Creates the official_clusters table if it does not already exist.
 
@@ -37,24 +49,28 @@ def create_official_clusters_table():
     """
 
     try:
-        with psycopg.connect(conn_string) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute("""
-                    CREATE TABLE IF NOT EXISTS official_clusters (
-                            id SERIAL PRIMARY KEY,
-                            source TEXT,
-                            title TEXT,
-                            standards_assessed TEXT[],
-                            num_of_questions SMALLINT,
-                            sections JSONB
-                    )
-                """)
-                conn.commit()
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.execute(
+            """
+                CREATE TABLE IF NOT EXISTS official_clusters (
+                    id SERIAL PRIMARY KEY,
+                    source TEXT,
+                    title TEXT,
+                    standards_assessed TEXT[],
+                    num_of_questions SMALLINT,
+                    sections JSONB
+                )
+            """)
     except Exception as e:
         print("Failed to create table.")
         print(e)
+    finally:
+        if conn:
+            await conn.close()
 
-def create_learning_standards_table():
+
+async def create_learning_standards_table() -> None:
     """
     Creates the learning_standards table if it does not already exist.
 
@@ -66,23 +82,29 @@ def create_learning_standards_table():
         - clarification_statement: Additional clarification or context for the standard.
     """
     try:
-        with psycopg.connect(conn_string) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute("""
-                    CREATE TABLE IF NOT EXISTS learning_standards (
-                            id SERIAL PRIMARY KEY,
-                            topic TEXT,
-                            standard_code TEXT,
-                            standard_definition TEXT,
-                            clarification_statement TEXT
-                    )
-                """)
-                conn.commit()
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.execute(
+            """
+                CREATE TABLE IF NOT EXISTS learning_standards (
+                    id SERIAL PRIMARY KEY,
+                    topic TEXT,
+                    standard_code TEXT,
+                    standard_definition TEXT,
+                    clarification_statement TEXT
+                )
+            """)
     except Exception as e:
         print("Failed to create table.")
         print(e)
+    finally:
+        if conn:
+            await conn.close()
 
-def insert_learning_standards(standardsList):
+
+async def insert_learning_standards(
+        standardsList: List[dict] = Field(description="A list of biology learning standards")
+    ) -> None:
     """
     Inserts a list of learning standards into the learning_standards table.
 
@@ -95,27 +117,33 @@ def insert_learning_standards(standardsList):
     """
 
     if len(standardsList) == 0:
-        return None
+        return
 
     values = []
     for standard in standardsList:
         values.append(tuple(standard.values()))
             
     try:
-        with psycopg.connect(conn_string) as conn:
-            with conn.cursor() as cursor:
-                cursor.executemany("""
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.executemany(
+                """
                     INSERT INTO learning_standards (topic, standard_code, standard_definition, clarification_statement)
-                    VALUES (%s, %s, %s, %s);
-                    """,
-                    values
-                )
-                conn.commit()
+                    VALUES ($1, $2, $3, $4);
+                """,
+                values
+            )
     except Exception as e:
         print("Failed to insert standards.")
         print(e)
+    finally:
+        if conn:
+            await conn.close()
 
-def insert_official_clusters(clustersList):
+
+async def insert_official_clusters(
+        clustersList: List[dict] = Field(description="A list of clusters with its componets organized in JSON format")
+    ) -> None:
     """
     Inserts a list of clusters into the official_clusters table.
 
@@ -135,7 +163,7 @@ def insert_official_clusters(clustersList):
     """
 
     if len(clustersList) == 0:
-        return None
+        return
 
     values = []
     for cluster in clustersList:
@@ -159,15 +187,18 @@ def insert_official_clusters(clustersList):
         ))
     
     try:
-        with psycopg.connect(conn_string) as conn:
-            with conn.cursor() as cursor:
-                cursor.executemany("""
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.executemany(
+                """
                     INSERT INTO official_clusters (source, title, standards_assessed, num_of_questions, sections)
-                    VALUES (%s, %s, %s, %s, %s);
-                    """,
-                    values
-                )
-                conn.commit()
+                    VALUES ($1, $2, $3, $4, $5);
+                """,
+                values
+            )
     except Exception as e:
         print("Failed to insert clusters.")
         print(e)
+    finally:
+        if conn:
+            await conn.close()
