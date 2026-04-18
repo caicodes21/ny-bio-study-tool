@@ -106,7 +106,7 @@ async def create_general_review_table() -> None:
     Creates the general_review table if it does not already exist.
 
     The table stores general review questions with the following columns:
-        - id: Auto-incrementing primary key.
+        - id: Auto-incrementing primary key
         - topic: The biology topic that the question falls under
         - difficulty: The difficulty level of the question
         - question_number: The question number under this topic
@@ -132,7 +132,41 @@ async def create_general_review_table() -> None:
                 );
             """)
     except Exception as e:
-        print("Failed to create table.")
+        print("Failed to create general_review table.")
+        print(e)
+    finally:
+        if conn:
+            await conn.close()
+
+
+async def create_practice_cluster_table() -> None:
+    """
+    Creates the practice_clusters table if it does not already exist.
+
+    The table stores practice clusters with the following columns:
+        - id: Auto-incrementing primary key
+        - cluster_number: The number for this cluster
+        - title: The title for this cluster
+        - topic_list: A list of topics that this cluster falls under
+        - standards_assessed: A list of standards assessed by this cluster
+        - cluster_sections: A list of the sections of this cluster
+    """
+    try:
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.execute(
+            """
+                CREATE TABLE IF NOT EXISTS practice_clusters (
+                    id SERIAL PRIMARY KEY,
+                    cluster_number SMALLINT,
+                    title TEXT,
+                    topic_list TEXT[],
+                    standards_assessed TEXT[],
+                    cluster_sections JSONB
+                );
+            """)
+    except Exception as e:
+        print("Failed to create practice_clusters table.")
         print(e)
     finally:
         if conn:
@@ -239,4 +273,3 @@ async def insert_official_clusters(
         if conn:
             await conn.close()
 
-asyncio.run(create_general_review_table())

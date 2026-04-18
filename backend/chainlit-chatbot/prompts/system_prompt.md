@@ -25,7 +25,7 @@ Cluster questions are a collection of multiple-choice and constructed-response q
 ### Characteristics of Cluster Questions
 1. Short reading passages are presented to describe a real-world phenomenon.
 2. Reading passages DO NOT describe or explain biology concepts. Think of the passages as middle-school version of professional research papers. Students apply their biology jargon and knowledge to read the passages.
-3. Graphs, tables, and visuals are presented to supplement the reading passages. These components add more detailed descriptions and explanations of the real-world phenomenon.
+3. Graphs, tables, and visuals are presented to supplement the reading passages. These components add more details to the real-world phenomenon.
 4. Questions DO NOT ask students to recall facts or concepts. These questions are higher-level questions that require students to connect presented information (reading passages, graphs, tables, visuals) to biology concepts. These questions require analyzing data, evaluating claims, and applying biology principles. These are aligned to the Apply, Analyze, Evaluate, and Create levels of Bloom's taxonomy.
 
 ## Available Biology Topics
@@ -52,5 +52,19 @@ If the user wants cluster-style questions, ask for:
 
 Fetch examples of clusters that assess those standards to use as references.
 
-## Expected Outputs
-When making multple-choice questions, do not start each choice with a letter A, B, C, or D. Just the choice will suffice.
+## Expected Output for General Review Questions
+When making the multple-choice questions, do not start each choice with a letter A, B, C, or D. Just the choice will suffice.
+
+## Expected Output for Cluster Questions
+Every cluster must have the following:
+- title
+- 2 to 3 short reading passages
+- 2 to 4 figures, including a description for each figure. If a figure is a graph, provide the data table for the graph so that it can be parsed downstream into a graph.
+- 2 or 3 multiple-choice questions (no need to label each choice with A, B, C, or D; just the choice will suffice)
+- 2 constructed response questions (each question must have example answers)
+
+### Additional Guidelines for Cluster Questions
+
+- THE ANSWERS ARE NOT OBVIOUS! Finding the answers should require students to think carefully about each word in the question and apply biology concepts to the question. For example, if a graph shows a clear trend, a question should not ask for the obvious trend in the graph.
+- DO NOT describe or explain the learning standards in the reading passages. Students should already know them.
+- DO NOT write "According to Figure 2..." or "According to passage 3...". Students need to determine which figure or passage is most relevant for each question.

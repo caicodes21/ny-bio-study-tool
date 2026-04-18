@@ -2,9 +2,9 @@ import sys
 import os
 import asyncpg
 from dotenv import load_dotenv
-from pydantic import Field
+from pydantic import Field, ValidationError
 from typing import Any, Literal
-from custom_classes import MultipleChoice, DataTable
+from custom_classes import GeneralReviewQuestion, DataTable, PracticeCluster, StandardCodes
 import json
 
 load_dotenv()
@@ -64,6 +64,59 @@ async def fetch_standards_by_topic(
         if conn:
             await conn.close()
 
+
+async def fetch_standards_by_code(
+    codes_list: list[StandardCodes] = Field(description="A list of standard codes (ex: HS-LS1-1)")
+) -> list[tuple[str, ...]] | None:
+    """
+    Fetch learning standards from the database by their codes.
+
+    Queries the learning_standards table and returns the code, definition,
+    and clarification statement for each matched standard.
+
+    Args:
+        codes_list (list[StandardCodes]): A list of standard codes
+
+    Returns:
+        A list of tuples, each containing:
+            - standard_code (str): The standard's code identifier.
+            - standard_definition (str): The full definition of the standard.
+            - clarification_statement (str): Additional clarification for the standard.
+        Returns an empty list if no matches are found or None if the connection string is not set.
+        Returns early if no codes are inputted.
+    """
+
+    if len(codes_list) == 0:
+        return
+
+    try:
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            standards = await conn.fetch(
+                """
+                    SELECT * 
+                    FROM learning_standards 
+                    WHERE standard_code = ANY($1);
+                """,
+                codes_list
+            )
+
+            res = [(
+                    s["standard_code"],
+                    s["standard_definition"],
+                    s["clarification_statement"]
+                ) for s in standards]
+            
+            return res
+                    
+    except Exception as e:
+        print("Failed to fetch standards.", file=sys.stderr)
+        print(e, file=sys.stderr)
+    finally:
+        if conn:
+            await conn.close()
+
+
 async def fetch_relevant_clusters(
     standard_codes: list[str] = Field(description="A list of standard codes")
 ) -> list[list[dict]] | None:
@@ -75,8 +128,7 @@ async def fetch_relevant_clusters(
     unrelated cluster.
 
     Args:
-        standard_codes: A list of standard codes to match against cluster 
-        standards (e.g. ["HS-LS1-1", "HS-LS1-2"]).
+        standard_codes: A list of standard codes to match against cluster standards (e.g. ["HS-LS1-1", "HS-LS1-2"]).
 
     Returns:
         A list of clusters or None if connection string is not set.
@@ -132,8 +184,9 @@ async def fetch_relevant_clusters(
         if conn:
             await conn.close()
 
+
 async def insert_general_review_questions(
-    review_questions: list[MultipleChoice] = "A list of multiple choice questions that review biology concepts"
+    review_questions: list[GeneralReviewQuestion] = Field(description="A list of multiple choice questions that review biology concepts")
 ) -> None:
     """
     ALWAYS ASK for permission before using this tool.
@@ -143,7 +196,7 @@ async def insert_general_review_questions(
     the topic in the db and increments it to be the number for this question.
 
     Args:
-        review_questions: A list of MultipleChoice, each representing a question with the following keys:
+        review_questions: A list of GeneralReviewQuestion, each representing a question with the following keys:
                         - topic (Literal[
                                     "structure_and_function", 
                                     "matter_and_energy_in_organisms_and_ecosystems",
@@ -155,7 +208,7 @@ async def insert_general_review_questions(
                         - difficulty (str): either "easy" or "medium"
                         - question (str): question wording
                         - correct_answer (str): correct answer
-                        - data_table (optional DataTable): tabular data for questions that reference a table.
+                        - data_table (optional DataTable): tabular data for questions that reference a table
                             DataTable has:
                                 - column_names (list[str]): ordered list of column header names
                                 - row_values list[DataTableRow]: a list of rows containing the cell values for each row
@@ -182,8 +235,6 @@ async def insert_general_review_questions(
                 for q in review_questions:
                     topic_counts[q.topic] = topic_counts.get(q.topic, 0) + 1
                     data_table = q.data_table.model_dump_json() if q.data_table else None
-                    if data_table:
-                        DataTable.model_validate_json(data_table)
                     records.append((
                         q.topic, q.difficulty, topic_counts[q.topic], q.question, 
                         data_table, q.correct_answer, q.wrong_choices
@@ -199,6 +250,51 @@ async def insert_general_review_questions(
 
     except Exception as e:
         print("Failed to insert general review questions.", file=sys.stderr)
+        print(e, file=sys.stderr)
+    finally:
+        if conn:
+            await conn.close()
+
+
+async def insert_practice_cluster(
+    practice_cluster: PracticeCluster = Field(description="A cluster made for practice")
+) -> None:
+    """
+    ALWAYS ASK for permission before using this tool.
+    Inserts a practice cluster into the practice_clusters table.
+
+    Counts the current total number of clusters in the db and uses it to assign a number to this cluster.
+
+    Args:
+        practice_cluster: A PracticeCluster, each representing a cluster with the following keys:
+    """
+
+    try:
+        if conn_string:
+
+            conn = await asyncpg.connect(conn_string)
+            async with conn.transaction():
+                count = await conn.fetchval("SELECT COUNT(*) FROM practice_clusters")
+
+                cluster_number = count + 1
+                params = [
+                    cluster_number,
+                    practice_cluster.title,
+                    practice_cluster.topic_list,
+                    practice_cluster.standards_assessed,
+                    json.dumps([section.model_dump() for section in practice_cluster.cluster_sections])
+                ]
+
+                await conn.execute(
+                    """
+                    INSERT INTO practice_clusters (cluster_number, title, topic_list, standards_assessed, cluster_sections)
+                    VALUES ($1, $2, $3, $4, $5);
+                    """,
+                    *params
+                )
+
+    except Exception as e:
+        print("Failed to insert practice cluster.", file=sys.stderr)
         print(e, file=sys.stderr)
     finally:
         if conn:
