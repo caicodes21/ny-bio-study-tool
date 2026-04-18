@@ -3,23 +3,31 @@ import os
 import asyncpg
 from dotenv import load_dotenv
 from pydantic import Field
-from typing import Any
+from typing import Any, Literal
+from custom_classes import MultipleChoice, DataTable
 import json
 
 load_dotenv()
 conn_string = os.getenv("PG_DB_URL")
 
-async def fetch_standards_by_code(
-    standard_codes: list[str] = Field(description="A list of standard codes")
+async def fetch_standards_by_topic(
+    topic: Literal[
+            "structure_and_function", 
+            "matter_and_energy_in_organisms_and_ecosystems",
+            "interdependent_relationships_in_ecosystems",
+            "inheritance_and_variation_of_traits",
+            "natural_selection_and_evolution",
+            "earths_systems"
+        ] = Field(description="A biology topic")
 ) -> list[tuple[str, ...]] | None:
     """
-    Fetch learning standards from the database by their standard codes.
+    Fetch learning standards from the database by their topic.
 
     Queries the learning_standards table and returns the code, definition,
     and clarification statement for each matched standard.
 
     Args:
-        standard_codes: A list of standard codes to look up (e.g. ["HS-LS1-1", "HS-LS1-2"]).
+        topic: A biology topic
 
     Returns:
         A list of tuples, each containing:
@@ -36,9 +44,9 @@ async def fetch_standards_by_code(
                 """
                     SELECT * 
                     FROM learning_standards 
-                    WHERE standard_code = ANY($1::text[])
+                    WHERE topic = $1;
                 """,
-                standard_codes
+                topic
             )
 
             res = [(
@@ -123,3 +131,76 @@ async def fetch_relevant_clusters(
     finally:
         if conn:
             await conn.close()
+
+async def insert_general_review_questions(
+    review_questions: list[MultipleChoice] = "A list of multiple choice questions that review biology concepts"
+) -> None:
+    """
+    ALWAYS ASK for permission before using this tool.
+    Inserts a list of multple choice questions into the general_review table.
+
+    For each question, counts the current number of questions belonging to 
+    the topic in the db and increments it to be the number for this question.
+
+    Args:
+        review_questions: A list of MultipleChoice, each representing a question with the following keys:
+                        - topic (Literal[
+                                    "structure_and_function", 
+                                    "matter_and_energy_in_organisms_and_ecosystems",
+                                    "interdependent_relationships_in_ecosystems",
+                                    "inheritance_and_variation_of_traits",
+                                    "natural_selection_and_evolution",
+                                    "earths_systems"
+                                ]): topic for the question
+                        - difficulty (str): either "easy" or "medium"
+                        - question (str): question wording
+                        - correct_answer (str): correct answer
+                        - data_table (optional DataTable): tabular data for questions that reference a table.
+                            DataTable has:
+                                - column_names (list[str]): ordered list of column header names
+                                - row_values list[DataTableRow]: a list of rows containing the cell values for each row
+                                DataTableRow has: row_number (int, 1-indexed) and column_values (dict mapping column name to value)  
+                        - wrong_choices (list): a list of wrong choices
+                        Returns early without inserting if the list is empty.
+    """
+
+    if len(review_questions) == 0:
+        return
+
+    try:
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            async with conn.transaction():
+                topics = list({q.topic for q in review_questions})
+                counts_by_topic = await conn.fetch(
+                    "SELECT topic, COUNT(*) as count FROM general_review WHERE topic = ANY($1) GROUP BY topic",
+                    topics,
+                )
+                topic_counts = {row["topic"]: row["count"] for row in counts_by_topic}
+
+                records = []
+                for q in review_questions:
+                    topic_counts[q.topic] = topic_counts.get(q.topic, 0) + 1
+                    data_table = q.data_table.model_dump_json() if q.data_table else None
+                    if data_table:
+                        DataTable.model_validate_json(data_table)
+                    records.append((
+                        q.topic, q.difficulty, topic_counts[q.topic], q.question, 
+                        data_table, q.correct_answer, q.wrong_choices
+                    ))
+
+                await conn.executemany(
+                    """
+                    INSERT INTO general_review (topic, difficulty, question_number, question, data_table, correct_answer, wrong_choices)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7);
+                    """,
+                    records,
+                )
+
+    except Exception as e:
+        print("Failed to insert general review questions.", file=sys.stderr)
+        print(e, file=sys.stderr)
+    finally:
+        if conn:
+            await conn.close()
+

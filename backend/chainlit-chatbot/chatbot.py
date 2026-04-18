@@ -9,6 +9,26 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 with open("./chainlit-chatbot/prompts/system_prompt.md") as file:
     system_prompt = file.read()
 
+greeting_message = "Hi, I am a chatbot that helps design general review questions or cluster questions. Feel free to adjust my settings as needed using the ⚙️ icon."
+
+cl_actions = [
+    cl.Action(name="make_questions", payload={"type": "general_review"}, icon="badge-question-mark", label="General Review", tooltip="Click to start making general review questions"),
+    cl.Action(name="make_questions", payload={"type": "cluster"}, icon="notebook-pen", label="Cluster", tooltip="Click to start making cluster questions")
+]
+
+@cl.action_callback("make_questions")
+async def on_general_review_action(action):
+
+    question_type = action.payload.get("type")
+    if question_type == "general_review":
+        msg = "I want to make general review questions. What do you need to get started?"
+    else:
+        msg = "I want to make cluster questions. What do you need to get started?"
+    user_msg = cl.Message(content=msg, type="user_message")
+    await user_msg.send()
+    await on_message(user_msg)
+
+
 @cl.on_chat_start
 async def on_chat_start():
 
@@ -20,12 +40,11 @@ async def on_chat_start():
                 values=[
                     "claude-opus-4-6",
                     "claude-sonnet-4-6",
-                    "claude-haiku-4-5-20251001",
                     "gpt-5.4",
                     "gpt-5.4-mini",
                     "gpt-5.4-nano"
                 ],
-                initial_value="claude-haiku-4-5-20251001",
+                initial_value="claude-sonnet-4-6",
             ),
             Slider(
                 id="temperature", 
@@ -43,51 +62,60 @@ async def on_chat_start():
         ]
     ).send()
 
-    await cl.Message(content="Hi, I am a chatbot that helps design biology questions. Feel free to adjust my settings as needed using the ⚙️ icon.").send()
+    await cl.Message(content=greeting_message, actions=cl_actions).send()
     llm = LLMFactory.create(model=settings["model"], temperature=settings["temperature"])
     cl.user_session.set("llm", llm)
-    cl.user_session.set("history", [])
+    cl.user_session.set("history", [SystemMessage(content=settings["system_prompt"]), AIMessage(content=greeting_message)])
     cl.user_session.set("system_prompt", settings["system_prompt"])
+
+
 
 @cl.on_settings_update
 async def setup_agent(settings):
+    for msg in cl.chat_context.get():
+        await msg.remove()
+
     llm = LLMFactory.create(model=settings["model"], temperature=settings["temperature"])
     cl.user_session.set("llm", llm)
-    cl.user_session.set("history", [])
+    cl.user_session.set("history", [SystemMessage(content=settings["system_prompt"]), AIMessage(content=greeting_message)])
     cl.user_session.set("system_prompt", settings["system_prompt"])
+    await cl.Message(content=greeting_message, actions=cl_actions).send()
+
 
 @cl.on_message
 async def on_message(message: cl.Message):
 
-    if cl.user_session.get("history") == None:
-        await cl.Message(content="Hi, I am a chatbot that helps design biology questions. Feel free to adjust my settings as needed using the ⚙️ icon.").send()
-        return
-
     history = cl.user_session.get("history", [])
-    history.append(HumanMessage(content=message.content))
 
-    llm = cl.user_session.get("llm")
-    mcp_session = cl.user_session.get("mcp_session")
-    tools = await load_mcp_tools(mcp_session)
-    llm_with_tools = llm.bind_tools(tools)
+    if len(history) == 0:
+        history.extend([SystemMessage(content=cl.user_session.get("system_prompt")), AIMessage(content=greeting_message)])
+        cl.user_session.set("history", history)
+
+    history.append(HumanMessage(content=message.content))
 
     msg = cl.Message(content="")
     await msg.send()
 
-    response = await llm_with_tools.ainvoke(
-        [SystemMessage(content=cl.user_session.get("system_prompt"))] + history
-    )
+    llm = cl.user_session.get("llm")
+    mcp_session = cl.user_session.get("mcp_session")
 
-    while response.tool_calls:
-        history.append(response)
-        for tool_call in response.tool_calls:
-            tool = next(t for t in tools if t.name == tool_call["name"])
-            result = await tool.ainvoke(tool_call["args"])
-            history.append(ToolMessage(content = str(result), tool_call_id = tool_call["id"]))
-        
-        response = await llm_with_tools.ainvoke(
-            [SystemMessage(content = cl.user_session.get("system_prompt"))] + history
-        )
+    if mcp_session is not None:
+        tools = await load_mcp_tools(mcp_session)
+        llm_with_tools = llm.bind_tools(tools)
+
+        response = await llm_with_tools.ainvoke(history)
+
+        while response.tool_calls:
+            history.append(response)
+            for tool_call in response.tool_calls:
+                tool = next(t for t in tools if t.name == tool_call["name"])
+                result = await tool.ainvoke(tool_call["args"])
+                history.append(ToolMessage(content = str(result), tool_call_id = tool_call["id"]))
+            
+            response = await llm_with_tools.ainvoke(history)
+    
+    else:
+        response = await llm.ainvoke(history)
 
     response_content = response.content
     for chunk in list(response_content):
@@ -98,6 +126,8 @@ async def on_message(message: cl.Message):
 
     history.append(AIMessage(content=response_content))
     cl.user_session.set("history", history)
+
+    # print(history)
 
 @cl.on_mcp_connect
 async def on_mcp_connect(connection, session: ClientSession):
@@ -115,8 +145,3 @@ async def on_mcp_connect(connection, session: ClientSession):
     mcp_tools[connection.name] = tools
     cl.user_session.set("mcp_tools", mcp_tools)
     cl.user_session.set("mcp_session", session)
-
-@cl.on_mcp_disconnect
-async def on_mcp_disconnect(name: str, session: ClientSession):
-    """Called when an MCP connection is terminated"""
-    pass

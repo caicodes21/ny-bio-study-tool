@@ -3,7 +3,6 @@ import asyncio
 import asyncpg
 from dotenv import load_dotenv
 from pydantic import Field
-from typing import List
 
 load_dotenv()
 conn_string = os.getenv("PG_DB_URL")
@@ -102,8 +101,46 @@ async def create_learning_standards_table() -> None:
             await conn.close()
 
 
+async def create_general_review_table() -> None:
+    """
+    Creates the general_review table if it does not already exist.
+
+    The table stores general review questions with the following columns:
+        - id: Auto-incrementing primary key.
+        - topic: The biology topic that the question falls under
+        - difficulty: The difficulty level of the question
+        - question_number: The question number under this topic
+        - question: The wording of the question itself
+        - data_table: An optional data table
+        - correct_answer: The answer to the question
+        - wrong_choices: A list of wrong choices
+    """
+    try:
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            await conn.execute(
+            """
+                CREATE TABLE IF NOT EXISTS general_review (
+                    id SERIAL PRIMARY KEY,
+                    topic TEXT,
+                    difficulty TEXT,
+                    question_number SMALLINT,
+                    question TEXT,
+                    data_table JSONB,
+                    correct_answer TEXT,
+                    wrong_choices TEXT[]
+                );
+            """)
+    except Exception as e:
+        print("Failed to create table.")
+        print(e)
+    finally:
+        if conn:
+            await conn.close()
+
+
 async def insert_learning_standards(
-        standardsList: List[dict] = Field(description="A list of biology learning standards")
+        standard_list: list[dict] = Field(description="A list of biology learning standards")
     ) -> None:
     """
     Inserts a list of learning standards into the learning_standards table.
@@ -112,15 +149,15 @@ async def insert_learning_standards(
     standard_definition, clarification_statement.
 
     Args:
-        standardsList: A list of dicts, each representing a learning standard.
+        standards_list: A list of dicts, each representing a learning standard.
                        Returns early without inserting if the list is empty.
     """
 
-    if len(standardsList) == 0:
+    if len(standards_list) == 0:
         return
 
     values = []
-    for standard in standardsList:
+    for standard in standards_list:
         values.append(tuple(standard.values()))
             
     try:
@@ -142,7 +179,7 @@ async def insert_learning_standards(
 
 
 async def insert_official_clusters(
-        clustersList: List[dict] = Field(description="A list of clusters with its componets organized in JSON format")
+        clusters_list: list[dict] = Field(description="A list of clusters with its componets organized in JSON format")
     ) -> None:
     """
     Inserts a list of clusters into the official_clusters table.
@@ -152,21 +189,20 @@ async def insert_official_clusters(
     the unique standards assessed across those sections.
 
     Args:
-        clustersList: A list of dicts, each representing a cluster with the
-                      following keys:
+        clusters_list: A list of dicts, each representing a cluster with the following keys:
                         - source (str): The origin of the cluster.
                         - title (str): The title of the cluster.
                         - sections (list): A list of section dicts, each with
-                          a 'type' and nested 'section' containing
-                          'standardAssessed'.
-                      Returns early without inserting if the list is empty.
+                          a "type" and nested "section" containing
+                          "standardAssessed".
+                        Returns early without inserting if the list is empty.
     """
 
-    if len(clustersList) == 0:
+    if len(cluster_list) == 0:
         return
 
     values = []
-    for cluster in clustersList:
+    for cluster in clusters_list:
 
         num_of_questions = 0
         standards_assessed = []
@@ -202,3 +238,5 @@ async def insert_official_clusters(
     finally:
         if conn:
             await conn.close()
+
+asyncio.run(create_general_review_table())
