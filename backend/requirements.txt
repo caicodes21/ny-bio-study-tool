@@ -4,8 +4,10 @@ aiohttp==3.13.5
 aiosignal==1.4.0
 annotated-doc==0.0.4
 annotated-types==0.7.0
+anthropic==0.96.0
 anyio==4.13.0
 asyncer==0.0.17
+asyncpg==0.31.0
 attrs==26.1.0
 bidict==0.23.1
 certifi==2026.2.25
@@ -19,6 +21,8 @@ cryptography==46.0.7
 cuid==0.4
 dataclasses-json==0.6.7
 Deprecated==1.3.1
+distro==1.9.0
+docstring_parser==0.18.0
 fastapi==0.136.0
 filetype==1.2.0
 frozenlist==1.8.0
@@ -32,12 +36,15 @@ idna==3.11
 importlib_metadata==8.7.1
 inflection==0.5.1
 Jinja2==3.1.6
+jiter==0.14.0
 jsonpatch==1.33
 jsonpointer==3.1.1
 jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
+langchain-anthropic==1.4.1
 langchain-core==1.3.0
 langchain-mcp-adapters==0.2.2
+langchain-openai==1.1.14
 langsmith==0.7.32
 Lazify==0.4.0
 literalai==0.1.201
@@ -48,6 +55,7 @@ multidict==6.7.1
 mypy_extensions==1.1.0
 neon-api==0.3.0
 nest-asyncio==1.6.0
+openai==2.32.0
 opentelemetry-api==1.41.0
 opentelemetry-exporter-otlp-proto-common==1.41.0
 opentelemetry-exporter-otlp-proto-grpc==1.41.0
@@ -110,6 +118,7 @@ python-multipart==0.0.26
 python-socketio==5.16.1
 PyYAML==6.0.3
 referencing==0.37.0
+regex==2026.4.4
 requests==2.33.1
 requests-toolbelt==1.0.0
 rpds-py==0.30.0
@@ -119,7 +128,9 @@ sse-starlette==3.3.4
 starlette==1.0.0
 syncer==2.0.3
 tenacity==9.1.4
+tiktoken==0.12.0
 tomli==2.4.1
+tqdm==4.67.3
 traceloop-sdk==0.59.2
 typing-inspect==0.9.0
 typing-inspection==0.4.2
