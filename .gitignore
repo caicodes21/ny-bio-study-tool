@@ -4,6 +4,5 @@ backend/.env
 frontend/.env
 backend/.venv
 backend/chainlit-chatbot/__pycache__
-backend/database/official-clusters.json
-backend/database/standards.json
+backend/database/*.json
 backend/mcp_server/__pycache__

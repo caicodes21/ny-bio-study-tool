@@ -212,40 +212,47 @@ async def insert_general_review_questions(
                             DataTable has:
                                 - column_names (list[str]): ordered list of column header names
                                 - row_values list[DataTableRow]: a list of rows containing the cell values for each row
-                                DataTableRow has: row_number (int, 1-indexed) and column_values (dict mapping column name to value)  
-                        - wrong_choices (list): a list of wrong choices
+                                DataTableRow has: row_number (int, 1-indexed) and column_values (dict mapping column name to value) 
+                        - choices (MultpleChoices): a dictionary of correct answer and distractor choices
+                        - answer_explanation (str): an explanation of why the correct answer is right 
                         Returns early without inserting if the list is empty.
     """
 
     if len(review_questions) == 0:
         return
-
+    
     try:
         if conn_string:
             conn = await asyncpg.connect(conn_string)
             async with conn.transaction():
+
+                total_question_count = await conn.fetchval("SELECT COUNT(*) FROM general_review")
+
                 topics = list({q.topic for q in review_questions})
                 counts_by_topic = await conn.fetch(
                     "SELECT topic, COUNT(*) as count FROM general_review WHERE topic = ANY($1) GROUP BY topic",
-                    topics,
+                    topics
                 )
                 topic_counts = {row["topic"]: row["count"] for row in counts_by_topic}
 
                 records = []
                 for q in review_questions:
+                    total_question_count += 1
                     topic_counts[q.topic] = topic_counts.get(q.topic, 0) + 1
+
                     data_table = q.data_table.model_dump_json() if q.data_table else None
+
                     records.append((
-                        q.topic, q.difficulty, topic_counts[q.topic], q.question, 
-                        data_table, q.correct_answer, q.wrong_choices
+                        total_question_count, q.topic, q.difficulty, topic_counts[q.topic], q.question, 
+                        data_table, q.choices.model_dump_json(), q.answer_explanation
                     ))
 
                 await conn.executemany(
                     """
-                    INSERT INTO general_review (topic, difficulty, question_number, question, data_table, correct_answer, wrong_choices)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7);
+                    INSERT INTO general_review (id, topic, difficulty, question_number, question, data_table, choices, answer_explanation)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
                     """,
-                    records,
+                    records
                 )
 
     except Exception as e:

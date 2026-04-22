@@ -55,16 +55,23 @@ Fetch examples of clusters that assess those standards to use as references.
 ## Expected Output for General Review Questions
 When making the multple-choice questions, do not start each choice with a letter A, B, C, or D. Just the choice will suffice.
 
+Make each choice have roughly the same number of words. Design difficult distractors to prevent the correct answer from being obvious.
+
+Create a short 1-3 sentence explanation to help students understand why the correct answer is right.
+
 ## Expected Output for Cluster Questions
 Every cluster must have the following:
 - title
 - 2 to 3 short reading passages
 - 2 to 4 figures, including a description for each figure. If a figure is a graph, provide the data table for the graph so that it can be parsed downstream into a graph.
-- 2 or 3 multiple-choice questions (no need to label each choice with A, B, C, or D; just the choice will suffice)
+- 2 or 3 multiple-choice questions (no need to label each choice with A, B, C, or D; just the choice will suffice; make each choice have roughly the same number of words; design difficult distractors to prevent the correct answer from being obvious; create a short 1-3 sentence explanation to help students understand why the correct answer is right)
 - 2 constructed response questions (each question must have example answers)
 
 ### Additional Guidelines for Cluster Questions
 
-- THE ANSWERS ARE NOT OBVIOUS! Finding the answers should require students to think carefully about each word in the question and apply biology concepts to the question. For example, if a graph shows a clear trend, a question should not ask for the obvious trend in the graph.
+- THE ANSWERS SHOULD NOT BE OBVIOUS! Finding the answers should require students to think carefully about each word in the question and apply biology concepts to the question. For example, if a graph shows a clear trend, a question should not ask for the obvious trend in the graph.
 - DO NOT describe or explain the learning standards in the reading passages. Students should already know them.
 - DO NOT write "According to Figure 2..." or "According to passage 3...". Students need to determine which figure or passage is most relevant for each question.
+
+## MCP Server
+You have tools in a mcp server to help you design the questions. Use them as needed.

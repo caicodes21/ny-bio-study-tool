@@ -1,6 +1,7 @@
 import os
 import asyncio
 import asyncpg
+import json
 from dotenv import load_dotenv
 from pydantic import Field
 
@@ -106,14 +107,14 @@ async def create_general_review_table() -> None:
     Creates the general_review table if it does not already exist.
 
     The table stores general review questions with the following columns:
-        - id: Auto-incrementing primary key
+        - id: record id serving as primary key
         - topic: The biology topic that the question falls under
         - difficulty: The difficulty level of the question
         - question_number: The question number under this topic
         - question: The wording of the question itself
-        - data_table: An optional data table
-        - correct_answer: The answer to the question
-        - wrong_choices: A list of wrong choices
+        - data_table: An optional JSON data table
+        - choices: A JSON object of correct answer and distractors
+        - answer_explanation: rationale behind the correct answer
     """
     try:
         if conn_string:
@@ -121,14 +122,14 @@ async def create_general_review_table() -> None:
             await conn.execute(
             """
                 CREATE TABLE IF NOT EXISTS general_review (
-                    id SERIAL PRIMARY KEY,
-                    topic TEXT,
-                    difficulty TEXT,
-                    question_number SMALLINT,
-                    question TEXT,
+                    id SMALLINT PRIMARY KEY,
+                    topic TEXT NOT NULL,
+                    difficulty TEXT NOT NULL,
+                    question_number SMALLINT NOT NULL,
+                    question TEXT NOT NULL,
                     data_table JSONB,
-                    correct_answer TEXT,
-                    wrong_choices TEXT[]
+                    choices JSONB NOT NULL,
+                    answer_explanation TEXT NOT NULL
                 );
             """)
     except Exception as e:
@@ -273,3 +274,66 @@ async def insert_official_clusters(
         if conn:
             await conn.close()
 
+async def insert_general_review_questions(
+        questions_list: list[dict] = Field(description="A list of general review questions")
+    ) -> None:
+    """
+    Inserts a list of general review questions into the general_review table.
+
+    For each question, assign it a unique record id and a topic question number
+
+    Args:
+        questions_list: A list of dicts, each representing a review question with the following keys:
+                        - topic (str): topic that the question falls under,
+                        - difficulty (str): question difficulty,
+                        - question (str): wording of the questions,
+                        - data_table (dict): an optional data table,
+                        - choices (dict): all the answer choices, including correct answer,
+                        - answer_explanation (str): rationale behind the correct answer
+                        Returns early without inserting if the list is empty.
+    """
+
+    if len(questions_list) == 0:
+        return
+
+    try:
+        if conn_string:
+            conn = await asyncpg.connect(conn_string)
+            total_question_count = await conn.fetchval("SELECT COUNT(*) FROM general_review")
+
+            topic_count = {}
+            for q in questions_list:
+                topic = q["topic"]
+                if topic not in topic_count.keys():
+                    count = await conn.fetchval("SELECT COUNT(*) FROM general_review WHERE topic = $1", topic)
+                    topic_count[topic] = count
+            
+            records = []
+            for q in questions_list:
+                total_question_count += 1
+                topic_count[q["topic"]] += 1
+                records.append((
+                    total_question_count,
+                    q["topic"],
+                    q["difficulty"],
+                    topic_count[q["topic"]],
+                    q["question"],
+                    json.dumps(q["data_table"]),
+                    json.dumps(q["choices"]),
+                    q["answer_explanation"]
+                ))
+            
+            res = await conn.executemany(
+                """
+                INSERT INTO general_review (id, topic, difficulty, question_number, question, data_table, choices, answer_explanation)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+                """,
+                records
+                )
+            
+    except Exception as e:
+        print("Failed to insert general review questions.")
+        print(e)
+    finally:
+        if conn:
+            await conn.close()

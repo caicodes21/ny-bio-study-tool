@@ -40,9 +40,7 @@ async def on_chat_start():
                 values=[
                     "claude-opus-4-6",
                     "claude-sonnet-4-6",
-                    "gpt-5.4",
-                    "gpt-5.4-mini",
-                    "gpt-5.4-nano"
+                    "gpt-5.4"
                 ],
                 initial_value="claude-sonnet-4-6",
             ),

@@ -8,6 +8,12 @@ StandardCodes = Literal[
     "HS-ESS2-6", "HS-ETS1-1", "HS-ETS1-2", "HS-ETS1-3", "HS-ETS1-4"
 ]
 
+class MultipleChoices(BaseModel):
+    correct_answer: str = Field(description="The correct answer to a multiple choice question")
+    distractor_1: str = Field(description="A wrong answer choice")
+    distractor_2: str = Field(description="A wrong answer choice")
+    distractor_3: str = Field(description="A wrong answer choice")
+
 class DataTableRow(BaseModel):
     row_number: int = Field(description="The row number, starting from 1", ge=1)
     column_values: dict[str, str | int | float] = Field(description="Maps a column to its associated value in the row")
@@ -31,8 +37,8 @@ class GeneralReviewQuestion(BaseModel):
         default=None,
         description="Optional data table if the question references tabular data; column_names is an ordered list of headers, row_values is a list of rows containing the cell values for each row"
     )
-    correct_answer: str = Field(description="The correct answer choice")
-    wrong_choices: list[str] = Field(description="List of incorrect answer choices")
+    choices: MultipleChoices = Field(description="A dict of correct answer and distractor choices")
+    answer_explanation: str = Field(description="An explanation of why the correct answer is right")
 
 class ClusterTitle(BaseModel):
     title: str = Field(description="The title of the cluster")
