@@ -145,8 +145,7 @@ async def create_practice_cluster_table() -> None:
     Creates the practice_clusters table if it does not already exist.
 
     The table stores practice clusters with the following columns:
-        - id: Auto-incrementing primary key
-        - cluster_number: The number for this cluster
+        - cluster_number: cluster number serving as primary key
         - title: The title for this cluster
         - topic_list: A list of topics that this cluster falls under
         - standards_assessed: A list of standards assessed by this cluster
@@ -158,12 +157,11 @@ async def create_practice_cluster_table() -> None:
             await conn.execute(
             """
                 CREATE TABLE IF NOT EXISTS practice_clusters (
-                    id SERIAL PRIMARY KEY,
-                    cluster_number SMALLINT,
-                    title TEXT,
-                    topic_list TEXT[],
-                    standards_assessed TEXT[],
-                    cluster_sections JSONB
+                    cluster_number SMALLINT PRIMARY KEY,
+                    title TEXT NOT NULL,
+                    topic_list TEXT[] NOT NULL,
+                    standards_assessed TEXT[] NOT NULL,
+                    cluster_sections JSONB NOT NULL
                 );
             """)
     except Exception as e:

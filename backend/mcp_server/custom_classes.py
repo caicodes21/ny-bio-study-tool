@@ -57,11 +57,12 @@ class ClusterFigure(BaseModel):
 
 class ClusterMultipleChoice(BaseModel):
     question: str = Field(description="Full wording of the question")
-    correct_answer: str = Field(description="The correct answer choice")
-    wrong_choices: list[str] = Field(description="A list of incorrect answer choices")
+    choices: MultipleChoices = Field(description="A dict of correct answer and distractor choices")
+    answer_explanation: str = Field(description="An explanation of why the correct answer is right")
 
 class ClusterConstructedResponse(BaseModel):
     question: str = Field(description="Full wording of the question")
+    grading_criteria: str = Field(description="A brief description of the necessary details needed for a complete and correct answer")
     acceptable_answers: list[str] = Field(description="A list of acceptable answers to the question", min_length=2, max_length=3)
 
 class ClusterQuestion(BaseModel):

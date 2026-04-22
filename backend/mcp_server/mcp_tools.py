@@ -281,9 +281,10 @@ async def insert_practice_cluster(
 
             conn = await asyncpg.connect(conn_string)
             async with conn.transaction():
-                count = await conn.fetchval("SELECT COUNT(*) FROM practice_clusters")
 
+                count = await conn.fetchval("SELECT COUNT(*) FROM practice_clusters")
                 cluster_number = count + 1
+
                 params = [
                     cluster_number,
                     practice_cluster.title,

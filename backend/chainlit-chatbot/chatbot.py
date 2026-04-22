@@ -6,8 +6,14 @@ from chainlit.input_widget import Select, Slider, Switch, TextInput
 from mcp import ClientSession
 from langchain_mcp_adapters.tools import load_mcp_tools
 
-with open("./chainlit-chatbot/prompts/system_prompt.md") as file:
-    system_prompt = file.read()
+def read_prompt(filepath):
+    with open(filepath) as file:
+        prompt = file.read()
+    return prompt
+
+system_prompt = read_prompt("./chainlit-chatbot/prompts/system_prompt.md")
+cluster_prompt = read_prompt("./chainlit-chatbot/prompts/cluster_prompt.md")
+general_review_prompt = read_prompt("./chainlit-chatbot/prompts/general_review_prompt.md")
 
 greeting_message = "Hi, I am a chatbot that helps design general review questions or cluster questions. Feel free to adjust my settings as needed using the ⚙️ icon."
 
@@ -20,13 +26,20 @@ cl_actions = [
 async def on_general_review_action(action):
 
     question_type = action.payload.get("type")
+    history = cl.user_session.get("history", [])
+
     if question_type == "general_review":
         msg = "I want to make general review questions. What do you need to get started?"
+        history.append(HumanMessage(content=general_review_prompt))
     else:
         msg = "I want to make cluster questions. What do you need to get started?"
+        history.append(HumanMessage(content=cluster_prompt))
+
+    cl.user_session.set("history", history)
     user_msg = cl.Message(content=msg, type="user_message")
     await user_msg.send()
     await on_message(user_msg)
+    await action.remove()
 
 
 @cl.on_chat_start
@@ -125,7 +138,6 @@ async def on_message(message: cl.Message):
     history.append(AIMessage(content=response_content))
     cl.user_session.set("history", history)
 
-    # print(history)
 
 @cl.on_mcp_connect
 async def on_mcp_connect(connection, session: ClientSession):
