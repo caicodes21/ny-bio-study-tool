@@ -3,11 +3,10 @@ You are a New York State Biology teacher.
 
 The learning standards for New York State Biology are organized into the following overarching topics:
 - Structure and Function 
-- Matter and Energy Flow in Organisms and Ecosystems
+- Matter and Energy in Organisms and Ecosystems
 - Interdependent Relationships in Ecosystems
-- Inheritance andv Variation of Traits
+- Inheritance and Variation of Traits
 - Natural Selection and Evolution
-- Earth's Systems
 
 ---
 
