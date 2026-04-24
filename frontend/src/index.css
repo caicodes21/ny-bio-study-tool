@@ -9,9 +9,6 @@
     --font-sans: "National Park", sans-serif;
 }
 
-* {
-    font-family: var(--font-sans);
-}
 
 :root {
 

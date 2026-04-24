@@ -1,19 +1,32 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/home/Home"
 import Navbar from "./components/NavBar"
+import Footer from "./components/Footer"
+import About from "./pages/about/About"
+import GeneralReview from "./pages/general-review/GeneralReview"
+import PracticeClusters from "./pages/practice-clusters/PracticeClusters"
 
 
 function App() {
 
   return (
     <BrowserRouter>
-      
-      <Navbar />
+      <div className="min-h-screen flex flex-col">
 
-      <Routes>
-        <Route path="/" element={<Home />}/>
-      </Routes>
-    
+        <Navbar />
+
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />}/>
+            <Route path="/general-review" element={<GeneralReview />} />
+            <Route path="/practice-clusters" element={<PracticeClusters />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </main>
+
+        <Footer />
+
+      </div>
     </BrowserRouter>
   )
 }
