@@ -6,4 +6,4 @@ class TopicEnum(str, Enum):
     interdependent_relationships_in_ecosystems = "interdependent_relationships_in_ecosystems"
     inheritance_and_variation_of_traits = "inheritance_and_variation_of_traits"
     natural_selection_and_evolution = "natural_selection_and_evolution"
-
+    earths_systems = "earths_systems"

@@ -5,10 +5,13 @@ from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
 from typing import Optional
 from setup import get_conn_pool
 from utils import *
+
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,6 +20,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(RequestValidationError)
@@ -46,6 +55,7 @@ async def general_review(request: Request, topic: TopicEnum | None = None, numbe
         
         else:
             return {}
+            
     except Exception as e:
         return {"msg": "Internal server error"}
 

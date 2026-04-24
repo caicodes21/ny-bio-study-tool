@@ -3,7 +3,7 @@ import asyncpg
 import asyncio
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="../.env")
+load_dotenv()
 conn_string = os.getenv("PG_DB_URL")
 
 async def get_conn_pool():
