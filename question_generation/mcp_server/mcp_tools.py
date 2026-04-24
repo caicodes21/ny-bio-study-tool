@@ -274,6 +274,17 @@ async def insert_practice_cluster(
 
     Args:
         practice_cluster: A PracticeCluster, each representing a cluster with the following keys:
+                        - title (str): the title of the cluster
+                        - topic_list (Literal[
+                                        "structure_and_function", 
+                                        "matter_and_energy_in_organisms_and_ecosystems",
+                                        "interdependent_relationships_in_ecosystems",
+                                        "inheritance_and_variation_of_traits",
+                                        "natural_selection_and_evolution",
+                                        "earths_systems"
+                                    ][]): an array of topics relevant to the cluster
+                        - standards_assessed (StandardCodes[]): an array of standards relevant to the cluster
+                        - cluster_sections (ClusterSection[]): an array of sections in the cluster
     """
 
     try:
@@ -290,7 +301,7 @@ async def insert_practice_cluster(
                     practice_cluster.title,
                     practice_cluster.topic_list,
                     practice_cluster.standards_assessed,
-                    json.dumps([section.model_dump() for section in practice_cluster.cluster_sections])
+                    json.dumps([section.model_dump(mode="json", exclude_none=False) for section in practice_cluster.cluster_sections])
                 ]
 
                 await conn.execute(

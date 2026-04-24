@@ -73,4 +73,5 @@ async def practice_clusters(request: Request, number: int | None = None):
             return await get_cluster_by_number(pool, number)
     
     except Exception as e:
+        print(e)
         return {"msg": "Internal server error"}

@@ -1,4 +1,5 @@
 import asyncpg
+import json
 
 def parse_sql_queries(query_filepath: str) -> dict:
     """
@@ -31,4 +32,35 @@ async def get_question_counts(pool: asyncpg.Pool):
     return await pool.fetch(_queries["get_question_counts"])
 
 async def get_question_by_topic_and_number(pool: asyncpg.Pool, topic: str, number: int):
-    return await pool.fetchrow(_queries["get_question_by_topic_and_number"], topic, number)
+    question = await pool.fetchrow(_queries["get_question_by_topic_and_number"], topic, number)
+
+    choices = json.loads(question["choices"])
+    formatted_question = {
+        "questionID": question["id"],
+        "topic": question["topic"],
+        "difficulty": question["difficulty"],
+        "questionNumber": question["question_number"],
+        "question": question["question"],
+        "dataTable": None,
+        "correctAnswer": choices["correct_answer"],
+        "wrongChoices": [choices["distractor_1"], choices["distractor_2"], choices["distractor_3"]],
+        "answerExplanation": question["answer_explanation"]
+    }
+
+    data_table = question["data_table"]
+
+    if data_table != "null":
+        data_table = json.loads(data_table)
+        column_names = data_table["column_names"]
+        row_values = []
+        for row in data_table["row_values"]:
+            row_values.append([row["row_number"], [row["column_values"][col] for col in column_names]])
+        row_values = sorted(row_values)
+        formatted_question["dataTable"] = {
+            "columnNames": column_names,
+            "rowValues": row_values
+        }
+    
+    return formatted_question
+
+        

@@ -7,3 +7,4 @@ backend/chainlit-chatbot/__pycache__
 backend/database/*.json
 backend/mcp_server/__pycache__
 *.pyc
+.env

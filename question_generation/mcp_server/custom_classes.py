@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 from pydantic import BaseModel, Field
 
 StandardCodes = Literal[
@@ -33,7 +33,7 @@ class GeneralReviewQuestion(BaseModel):
     ] = Field(description="Biology topic the question belongs to")
     difficulty: Literal["easy", "medium"] = Field(description="Difficulty level of the question")
     question: str = Field(description="Full wording of the question")
-    data_table: Optional[DataTable] = Field(
+    data_table: DataTable | None = Field(
         default=None,
         description="Optional data table if the question references tabular data; column_names is an ordered list of headers, row_values is a list of rows containing the cell values for each row"
     )
@@ -50,9 +50,17 @@ class ClusterFigure(BaseModel):
     figure_number: int = Field(description="The number of the figure, starting from 1", ge=1)
     figure_type: Literal["image", "table", "line", "bar"] = Field(description="The type of the figure")
     description: str = Field(description="A short description of the figure and its relationship to the cluster")
-    data_table: Optional[DataTable] = Field(
+    data_table: DataTable | None = Field(
         default=None,
         description="An optional data table for a table, line graph, and bar graph; images do not need data table"
+    )
+    url: str | None = Field(
+        default=None,
+        description="The URL of the image, if the figure is an image"
+        )
+    sources: list[str] | None = Field(
+        default=None,
+        description="A list of the image sources, if the figure is an image"
     )
 
 class ClusterMultipleChoice(BaseModel):
@@ -73,6 +81,7 @@ class ClusterQuestion(BaseModel):
 class ClusterSection(BaseModel):
     section_number: int = Field(description="The number of the section, for sequential ordering purposes")
     section_content: ClusterTitle | ClusterText | ClusterFigure | ClusterQuestion
+    section_type: Literal["title", "text", "figure", "question"] = Field(description="The type of the section")
 
 class PracticeCluster(BaseModel):
     title: str = Field(description="The title of the cluster")

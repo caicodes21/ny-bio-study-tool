@@ -1,4 +1,3 @@
-import httpx
 from mcp.server.fastmcp import FastMCP
 from mcp_tools import fetch_relevant_clusters, fetch_standards_by_code, fetch_standards_by_topic, insert_general_review_questions, insert_practice_cluster
 
