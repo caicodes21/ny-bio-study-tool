@@ -1,5 +1,6 @@
 from query_functions.general_review import get_question_counts, get_question_by_topic_and_number
 from query_functions.practice_clusters import get_cluster_info, get_cluster_by_number
+from query_functions.exam_dates import get_exam_dates
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
@@ -10,8 +11,6 @@ from pydantic import ValidationError
 from typing import Optional
 from setup import get_conn_pool
 from utils import *
-
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -71,6 +70,19 @@ async def practice_clusters(request: Request, number: int | None = None):
         
         else:
             return await get_cluster_by_number(pool, number)
+    
+    except Exception as e:
+        print(e)
+        return {"msg": "Internal server error"}
+
+
+@app.get("/exam-dates")
+async def exam_dates(request: Request):
+
+    pool = request.app.state.conn_pool
+
+    try:
+        return await get_exam_dates(pool)
     
     except Exception as e:
         print(e)

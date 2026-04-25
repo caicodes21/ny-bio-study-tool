@@ -6,7 +6,6 @@ import About from "./pages/about/About"
 import GeneralReview from "./pages/general-review/GeneralReview"
 import PracticeClusters from "./pages/practice-clusters/PracticeClusters"
 
-
 function App() {
 
   return (
