@@ -3,7 +3,7 @@ import { fetchExamDates } from '../services/examDatesServices'
 
 export function useExamDates() {
 
-  const [examDates, setExamDates] = useState(null)
+  const [examDates, setExamDates] = useState<any[] | null>(null)
   const [isLoadingExamDates, setIsLoadingExamDates] = useState(true)
   const [examDatesError, setExamDatesError] = useState(null)
 

@@ -1,11 +1,8 @@
 import Carousel from "../../components/Carousel"
+import { ExamDates } from "./ExamDates"
+import { SampleQuestions } from "./SampleQuestions"
 
 export default function Home() {
-
-    const placeholderSlides = [
-        <div>Hello</div>,
-        <div>World</div>
-    ]
 
     return (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
@@ -20,12 +17,12 @@ export default function Home() {
                     Review. Reinforce. Repeat.
                 </p>
                 <p className="text-md text-center">
-                    Upcoming Exam Dates: June 18 | August 19
+                    <ExamDates />
                 </p>
             </div>
 
             <div className="mx-auto w-11/12">
-                <Carousel slides={placeholderSlides}/>
+                <SampleQuestions />
             </div>
 
         </div>
