@@ -12,7 +12,7 @@ export default function Carousel({ slides }: CarouselProps) {
 
     return (
         <div className="flex flex-col items-center gap-4 w-full">
-            <div className="w-full border border-border rounded-md p-4 min-h-85">
+            <div className="w-full border border-border rounded-md min-h-85">
                 {slides[index]}
             </div>
             <div className="flex items-center gap-4">

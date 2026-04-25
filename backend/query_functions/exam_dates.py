@@ -30,6 +30,6 @@ _queries = parse_sql_queries(query_filepath)
 
 async def get_exam_dates(pool: asyncpg.Pool):
     records = await pool.fetch(_queries["get_exam_dates"])
-    dates = [record["exam_date"] for record in records]
+    dates = sorted([record["exam_date"] for record in records])
     current_time = datetime.now(timezone.utc)
     return [d for d in dates if datetime(d.year, d.month, d.day, tzinfo=timezone.utc) >= current_time][0:2]

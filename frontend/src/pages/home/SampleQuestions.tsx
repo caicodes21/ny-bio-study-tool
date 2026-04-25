@@ -7,7 +7,7 @@ const sampleQuestionInfo: [string, number][] = [
     ["matter_and_energy_in_organisms_and_ecosystems", 1],
     ["interdependent_relationships_in_ecosystems", 5],
     ["inheritance_and_variation_of_traits", 1],
-    ["natural_selection_and_evolution", 1]
+    ["natural_selection_and_evolution", 2]
 ]
 
 export function SampleQuestions() {
@@ -15,7 +15,7 @@ export function SampleQuestions() {
     const { reviewQuestions, isLoadingQuestions, questionsError } = useGeneralReviewQuestions(sampleQuestionInfo)
 
     if (!isLoadingQuestions && reviewQuestions) {
-        return <Carousel slides={reviewQuestions.map((MCQuestion) => <MultipleChoiceCard question={MCQuestion} />)}/>
+        return <Carousel slides={reviewQuestions.map((MCQuestion, idx) => <MultipleChoiceCard key={`question-${idx}`} question={MCQuestion} />)}/>
     }
 
     if (questionsError) {

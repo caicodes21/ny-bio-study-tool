@@ -16,9 +16,7 @@ export default function Home() {
                 <p className="text-2xl text-center">
                     Review. Reinforce. Repeat.
                 </p>
-                <p className="text-md text-center">
-                    <ExamDates />
-                </p>
+                <ExamDates />
             </div>
 
             <div className="mx-auto w-11/12">
