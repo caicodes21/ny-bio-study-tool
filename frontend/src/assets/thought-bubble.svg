@@ -1,0 +1,55 @@
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" width="400" height="320">
+
+  <!-- SHADOW LAYER (offset +6,+6) -->
+  <ellipse cx="211" cy="151" rx="130" ry="100" fill="#bbb" stroke="none"/>
+  <!-- Shadow top bumps -->
+  <circle cx="136" cy="74" r="36" fill="#bbb" stroke="none"/>
+  <circle cx="186" cy="54" r="38" fill="#bbb" stroke="none"/>
+  <circle cx="239" cy="51" r="37" fill="#bbb" stroke="none"/>
+  <circle cx="289" cy="68" r="35" fill="#bbb" stroke="none"/>
+  <!-- Shadow right bumps -->
+  <circle cx="328" cy="111" r="33" fill="#bbb" stroke="none"/>
+  <circle cx="341" cy="156" r="32" fill="#bbb" stroke="none"/>
+  <circle cx="328" cy="201" r="33" fill="#bbb" stroke="none"/>
+  <!-- Shadow bottom bumps -->
+  <circle cx="289" cy="234" r="34" fill="#bbb" stroke="none"/>
+  <circle cx="239" cy="249" r="35" fill="#bbb" stroke="none"/>
+  <circle cx="186" cy="246" r="34" fill="#bbb" stroke="none"/>
+  <circle cx="139" cy="230" r="33" fill="#bbb" stroke="none"/>
+  <!-- Shadow left bumps -->
+  <circle cx="101" cy="199" r="32" fill="#bbb" stroke="none"/>
+  <circle cx="86" cy="154" r="33" fill="#bbb" stroke="none"/>
+  <circle cx="102" cy="110" r="33" fill="#bbb" stroke="none"/>
+  <!-- Shadow tail -->
+  <circle cx="114" cy="274" r="18" fill="#bbb" stroke="none"/>
+  <circle cx="88" cy="299" r="11" fill="#bbb" stroke="none"/>
+  <circle cx="69" cy="318" r="7" fill="#bbb" stroke="none"/>
+
+  <!-- MAIN BUBBLE -->
+  <ellipse cx="205" cy="145" rx="130" ry="100" fill="white" stroke="none"/>
+  <!-- Top bumps -->
+  <circle cx="130" cy="68" r="36" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="180" cy="48" r="38" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="233" cy="45" r="37" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="283" cy="62" r="35" fill="white" stroke="black" stroke-width="3"/>
+  <!-- Right bumps -->
+  <circle cx="322" cy="105" r="33" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="335" cy="150" r="32" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="322" cy="195" r="33" fill="white" stroke="black" stroke-width="3"/>
+  <!-- Bottom bumps -->
+  <circle cx="283" cy="228" r="34" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="233" cy="243" r="35" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="180" cy="240" r="34" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="133" cy="224" r="33" fill="white" stroke="black" stroke-width="3"/>
+  <!-- Left bumps -->
+  <circle cx="95" cy="193" r="32" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="80" cy="148" r="33" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="96" cy="104" r="33" fill="white" stroke="black" stroke-width="3"/>
+  <!-- Center fill to clean up inner strokes -->
+  <ellipse cx="205" cy="145" rx="128" ry="98" fill="white" stroke="none"/>
+  <!-- Tail -->
+  <circle cx="108" cy="268" r="18" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="82" cy="293" r="11" fill="white" stroke="black" stroke-width="3"/>
+  <circle cx="63" cy="312" r="7" fill="white" stroke="black" stroke-width="3"/>
+
+</svg>

@@ -1,7 +1,8 @@
 export interface MultipleChoiceQuestion {
     question: string,
     correctAnswer: string,
-    wrongChoices: string[]
+    choices: string[],
+    answerExplanation: string
 }
 
 export interface ConstructedResponseQuestions {

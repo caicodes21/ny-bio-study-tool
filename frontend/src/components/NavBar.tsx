@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Chevron from './Chevron'
 
 export default function Navbar() {
 
@@ -21,16 +22,7 @@ export default function Navbar() {
                     className="flex items-center gap-1 px-4 py-2 text-text rounded-md text-lg hover:cursor-pointer"
                 >
                     Study
-                    <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
-                    >
-                        <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    <Chevron rotate={dropdownOpen} width={12} height={12}/>
                 </button>
 
             {dropdownOpen && (

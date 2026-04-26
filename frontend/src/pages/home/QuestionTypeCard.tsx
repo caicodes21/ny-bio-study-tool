@@ -1,0 +1,18 @@
+interface QuestionTypeCardProps {
+    questionType: string,
+    description: string,
+    svgPath: string
+}
+
+export default function QuestionTypeCard({questionType, description, svgPath}: QuestionTypeCardProps) {
+
+    return (
+        <div className="flex justify-center items-center px-5 border-2 border-border rounded-lg">
+            <img src={svgPath} height={100} width={100} alt="A thought bubble icon"/>
+            <div className="flex flex-col p-2">
+                <h1 className="text-xl font-semibold">{questionType}</h1>
+                <p className="text-lg">{description}</p>
+            </div>
+        </div>
+    )
+}

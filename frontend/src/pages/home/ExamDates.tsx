@@ -6,7 +6,12 @@ export function ExamDates() {
 
     if (!isLoadingExamDates && examDates) {
         const formattedDates = examDates.map((date) => new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" , timeZone: "UTC"}))
-        return <p className="text-md text-center">Upcoming Exam Dates: {formattedDates.join(" | ")}</p>
+        return (
+            <div className="text-lg text-center">
+                <p>Upcoming Exam Dates:</p>
+                <p>{formattedDates.join(" | ")}</p>
+            </div>
+        )
     }
 
     if (examDatesError) {
