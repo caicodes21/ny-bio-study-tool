@@ -1,6 +1,7 @@
 import type { MultipleChoiceQuestion } from "../../types/question";
 import { useState } from "react";
 import AnswerExplanation from "./AnswerExplanation";
+import type { DataTable } from "../../types";
 
 interface MultipleChoiceCardProps {
     question: MultipleChoiceQuestion,
@@ -14,9 +15,39 @@ function shuffleChoices(choices: string[]) {
     }
 }
 
+function MCDataTable({columnNames, rowValues}: DataTable) {
+
+    return (
+        <table className="text-center border border-black">
+            <tr className="border-b">
+                {columnNames.map((col) => <th key={`${col}`} className="border-r">{col}</th>)}
+            </tr>
+            {
+                rowValues.map((row) => {
+
+                    const [rowNum, cellValues] = [...row]
+
+                    return (
+                        <tr key={`row-${rowNum}`} className="border-b">
+                            {
+                                cellValues.map((val, idx) => 
+                                <td key={`row-${rowNum}-col-${idx+1}`} className="border-r">
+                                    {val}
+                                </td>)
+                            }
+                        </tr>
+                    )
+                })
+            }
+        </table>
+    )
+
+}
+
 export default function MultipleChoiceCard({question, updateProgress}: MultipleChoiceCardProps) {
 
-    const choices = [question.correctAnswer, ...question.wrongChoices]
+    const { topic, questionNumber, correctAnswer, wrongChoices, dataTable, answerExplanation } = question
+    const choices = [correctAnswer, ...wrongChoices]
     shuffleChoices(choices)
     
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
@@ -27,8 +58,8 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
         setSelectedAnswer(choice)
         setIsSubmitted(true)
 
-        if (question.topic && selectedAnswer === question.correctAnswer) {
-            updateProgress(question.topic, question.questionNumber)
+        if (topic && selectedAnswer === correctAnswer) {
+            updateProgress(topic, questionNumber)
         }
     }
 
@@ -41,10 +72,11 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
     return (
         <div className="border border-border h-full w-full rounded-lg">
             <div 
-                className="p-5 border-b border-border bg-surface w-full rounded-t-lg"
+                className="flex flex-col p-5 border-b border-border bg-surface w-full rounded-t-lg"
             >
-                {question.topic && <p className="font-semibold">{`Question ${question.questionNumber}`}</p>}
+                {topic && <p className="font-semibold">{`Question ${questionNumber}`}</p>}
                 <p>{question.question}</p>
+                {dataTable && <MCDataTable columnNames={dataTable.columnNames} rowValues={dataTable.rowValues} />}
             </div>
             <div className="flex flex-col w-full rounded-b-lg">
                 {
@@ -55,8 +87,8 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
                                 className="border border-border rounded-md py-1 px-5 text-left w-11/12 mt-5 mx-auto hover:cursor-pointer hover:bg-surface"
                                 style={{
                                     pointerEvents: isSubmitted ? "none" : "auto",
-                                    background: isSubmitted && selectedAnswer == question.correctAnswer && choice === question.correctAnswer ? "#9FE593" : choice === selectedAnswer ? "#F2F1EE" : undefined,
-                                    borderWidth: isSubmitted && selectedAnswer == question.correctAnswer && choice === question.correctAnswer ? "0px" : undefined
+                                    background: isSubmitted && selectedAnswer == correctAnswer && choice === correctAnswer ? "#9FE593" : choice === selectedAnswer ? "#F2F1EE" : undefined,
+                                    borderWidth: isSubmitted && selectedAnswer == correctAnswer && choice === correctAnswer ? "0px" : undefined
                                 }}
                                 onClick={() => setSelectedAnswer(choice)}
                                 disabled={isSubmitted}
@@ -67,7 +99,7 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
                     })
                 }
                 {
-                    isSubmitted && selectedAnswer !== question.correctAnswer ?
+                    isSubmitted && selectedAnswer !== correctAnswer ?
                     <button
                         className="border border-border rounded-md p-1 w-1/3 self-center bg-surface my-5 hover:cursor-pointer hover:bg-surface"
                         onClick={() => refreshCard()}
@@ -78,18 +110,18 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
                         className="border border-border rounded-md p-1 w-1/3 self-center bg-surface my-5 hover:cursor-pointer hover:bg-surface"
                         style={{
                             pointerEvents: isSubmitted && selectedAnswer ? "none" : "auto",
-                            opacity: isSubmitted && selectedAnswer === question.correctAnswer ? "50%" : undefined
+                            opacity: isSubmitted && selectedAnswer === correctAnswer ? "50%" : undefined
                         }}
                         onClick={() => handleAnswer(selectedAnswer as string)}
                         disabled={!selectedAnswer}
                     >
-                        {isSubmitted && selectedAnswer === question.correctAnswer ? "Correct!" : "Submit"}
+                        {isSubmitted && selectedAnswer === correctAnswer ? "Correct!" : "Submit"}
                     </button>
                 }
                 {
-                    isSubmitted && selectedAnswer === question.correctAnswer ?
+                    isSubmitted && selectedAnswer === correctAnswer ?
                     <div className="ml-5 mb-2">
-                        <AnswerExplanation show={showExplanation} setShow={setShowExplanation} text={question.answerExplanation} />
+                        <AnswerExplanation show={showExplanation} setShow={setShowExplanation} text={answerExplanation} />
                     </div> :
                     <></>
                 }
