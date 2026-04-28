@@ -49,7 +49,7 @@ async def get_question_by_topic_and_number(pool: asyncpg.Pool, topic: str, numbe
 
     data_table = question["data_table"]
 
-    if data_table != "null":
+    if data_table != "null" and data_table is not None:
         data_table = json.loads(data_table)
         column_names = data_table["column_names"]
         row_values = []

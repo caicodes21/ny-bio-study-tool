@@ -44,6 +44,6 @@ export const clusterDescriptions = [
     },
     {
         sectionTitle: "How Many Questions are in the Exam?",
-        sectionBody: "The NYS Education Department has announced that each exam is expected to have 9 to 11 clusters with a total of 45 to 55 questions."
+        sectionBody: "The NYS Education Department has announced that the exam is expected to have 9 to 11 clusters with a total of 45 to 55 questions."
     }
 ]

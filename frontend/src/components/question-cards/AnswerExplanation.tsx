@@ -8,7 +8,7 @@ interface AnswerExplanationProps {
 
 export default function AnswerExplanation({show, setShow, text}: AnswerExplanationProps) {
     return (
-        <div>
+        <>
             <button
                 onClick={() => setShow(!show)}
                 className="flex items-center gap-1"
@@ -25,6 +25,6 @@ export default function AnswerExplanation({show, setShow, text}: AnswerExplanati
             >
                 <p>{text}</p>
             </div>
-        </div>
+        </>
     )
 }

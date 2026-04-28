@@ -31,6 +31,8 @@ export async function fetchGeneralReviewQuestion(topic: string, number: number) 
             number: String(number)
         })
 
+        console.log(`${BASE_API_URL}${TABLE_NAME}?${params}`)
+
         const res = await fetch(`${BASE_API_URL}${TABLE_NAME}?${params}`)
         
         if (!res.ok) {

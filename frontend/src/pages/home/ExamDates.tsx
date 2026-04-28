@@ -18,5 +18,10 @@ export function ExamDates() {
         console.log(examDatesError)
     }
 
-    return <p className="text-md text-center">Upcoming Exam Dates: Loading...</p>
+    return (
+        <div className="text-lg text-center">
+            <p>Upcoming Exam Dates:</p>
+            <p>Loading...</p>
+        </div>
+    )
 }

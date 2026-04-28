@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { fetchGeneralReviewQuestion } from '../services/generalReviewServices'
 
-export function useGeneralReviewQuestions(filters: [string, number][]) {
+export function useGeneralReviewQuestions() {
 
   const [reviewQuestions, setReviewQuestions] = useState<any[] | null>(null)
-  const [isLoadingQuestions, setIsLoadingQuestions] = useState(true)
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false)
   const [questionsError, setQuestionsError] = useState(null)
 
-  useEffect(() => {
-    Promise.all(filters.map(([topic, number]) => fetchGeneralReviewQuestion(topic, number)))
-      .then(setReviewQuestions)
-      .catch(setQuestionsError)
-      .finally(() => setIsLoadingQuestions(false))
-  }, [filters])
+  async function fetchReviewQuestions(filters: [string, number][]) {
+    setIsLoadingQuestions(true)
+    try {
+      const questions = await Promise.all(filters.map(([topic, number]) => fetchGeneralReviewQuestion(topic, number)))
+      setReviewQuestions(questions)
+    } catch (err: any) {
+      setQuestionsError(err)
+    } finally {
+      setIsLoadingQuestions(false)
+    }
+  }
 
-  return { reviewQuestions, isLoadingQuestions, questionsError } 
+  return { reviewQuestions, isLoadingQuestions, questionsError, fetchReviewQuestions } 
   
 }

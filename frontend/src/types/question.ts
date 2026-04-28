@@ -1,7 +1,12 @@
+import type { DataTable } from "./index"
+
 export interface MultipleChoiceQuestion {
+    topic?: string,
+    questionNumber: number,
     question: string,
+    dataTable: DataTable | null,
     correctAnswer: string,
-    choices: string[],
+    wrongChoices: string[],
     answerExplanation: string
 }
 

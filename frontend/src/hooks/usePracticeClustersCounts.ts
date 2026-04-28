@@ -3,7 +3,7 @@ import { fetchPracticeClustersCounts } from '../services/practiceClustersService
 
 export function usePracticeClustersCounts() {
 
-  const [clusterCounts, setClusterCounts] = useState(null)
+  const [clusterCounts, setClusterCounts] = useState<any[] | null>(null)
   const [isLoadingClusterCounts, setIsLoadingClusterCounts] = useState(true)
   const [clusterCountsError, setClusterCountsError] = useState(null)
 

@@ -3,7 +3,7 @@ import { fetchGeneralReviewCounts } from '../services/generalReviewServices'
 
 export function useGeneralReviewCounts() {
 
-  const [reviewCounts, setReviewCounts] = useState(null)
+  const [reviewCounts, setReviewCounts] = useState<any[] | null>(null)
   const [isLoadingReviewCounts, setIsLoadingReviewCounts] = useState(true)
   const [reviewCountsError, setReviewCountsError] = useState(null)
 
