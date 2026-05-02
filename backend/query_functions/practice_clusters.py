@@ -42,11 +42,11 @@ async def get_cluster_info(pool: asyncpg.Pool):
     cluster_info = []
     for cluster in records:
         cluster_info.append({
-            "cluster_number": cluster["cluster_number"],
+            "clusterNumber": cluster["cluster_number"],
             "title": cluster["title"],
-            "topic_list": cluster["topic_list"],
-            "multiple_choice_count": cluster["multiple_choice_count"],
-            "constructed_response_count": cluster["constructed_response_count"]
+            "topicList": cluster["topic_list"],
+            "multipleChoiceCount": cluster["multiple_choice_count"],
+            "constructedResponseCount": cluster["constructed_response_count"]
         })
     
     return cluster_info

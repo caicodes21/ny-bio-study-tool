@@ -1,7 +1,7 @@
 const BASE_API_URL = import.meta.env.VITE_API_URL
 const TABLE_NAME = "practice-clusters"
 
-export async function fetchPracticeClustersCounts() {
+export async function fetchPracticeClustersInfo() {
 
     try {
 

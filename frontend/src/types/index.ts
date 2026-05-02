@@ -91,3 +91,12 @@ export interface PracticeCluster {
   standardsAssessed: StandardCodes[],
   sectionsList: (ClusterTitle | ClusterText | ClusterImage | ClusterGraph | ClusterTable | ClusterMultipleChoice | ClusterConstructedResponse)[]
 }
+
+
+export interface ClusterInfo {
+  clusterNumber: number,
+  title: string,
+  topicList: BiologyTopic[],
+  multipleChoiceCount: number,
+  constructedResponseCount: number
+}

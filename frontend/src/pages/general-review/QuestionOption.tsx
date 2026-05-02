@@ -10,7 +10,14 @@ interface QuestionOptionProps {
     reviewProgress: Record<string, number[]>
 }
 
-export default function QuestionOption({ topic, questionNumber, selectedQuestionTopic, selectedQuestionNumber, fetchQuestion, reviewProgress }: QuestionOptionProps) {
+export default function QuestionOption({ 
+    topic, 
+    questionNumber, 
+    selectedQuestionTopic, 
+    selectedQuestionNumber, 
+    fetchQuestion, 
+    reviewProgress 
+}: QuestionOptionProps) {
 
     const correctlyAnsweredQuestions = reviewProgress[topic]
 

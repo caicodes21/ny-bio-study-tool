@@ -53,7 +53,13 @@ interface QuestionSideBarProps {
     reviewProgress: Record<string, number[]>
 }
 
-export default function QuestionSidebar({ topicCounts, fetchQuestion, selectedQuestionTopic, selectedQuestionNumber, reviewProgress }: QuestionSideBarProps) {
+export default function QuestionSidebar({ 
+    topicCounts, 
+    fetchQuestion, 
+    selectedQuestionTopic, 
+    selectedQuestionNumber, 
+    reviewProgress 
+}: QuestionSideBarProps) {
 
     const [currentPage, setCurrentPage] = useState(0)
     const [maxPage, setMaxPage] = useState(0)
@@ -71,7 +77,17 @@ export default function QuestionSidebar({ topicCounts, fetchQuestion, selectedQu
             setCurrentPage(newMaxPage)
         }
 
-        const options = topicCounts.flatMap((entry) => Array.from({length: entry.count}, (_, idx) => <QuestionOption key={`${entry.topic}-question-${idx}`} topic={entry.topic} questionNumber={idx + 1} fetchQuestion={fetchQuestion} selectedQuestionTopic={selectedQuestionTopic} selectedQuestionNumber={selectedQuestionNumber} reviewProgress={reviewProgress} />))
+        const options = topicCounts.flatMap((entry) => Array.from({ length: entry.count }, (_, idx) => 
+            <QuestionOption 
+                key={`${entry.topic}-question-${idx}`} 
+                topic={entry.topic} 
+                questionNumber={idx + 1} 
+                fetchQuestion={fetchQuestion} 
+                selectedQuestionTopic={selectedQuestionTopic} 
+                selectedQuestionNumber={selectedQuestionNumber} 
+                reviewProgress={reviewProgress} 
+            />)
+        )
 
         setQuestionOptions(options)
 
@@ -96,7 +112,12 @@ export default function QuestionSidebar({ topicCounts, fetchQuestion, selectedQu
                     questionOptions.length ? 
                     <div>
                         {questionOptions.slice(currentPage * 10, currentPage * 10 + 10)}
-                        <PageButtons currentPage={currentPage} maxPage={maxPage} increment={incrementPage} decrement={decrementPage} />
+                        <PageButtons 
+                            currentPage={currentPage} 
+                            maxPage={maxPage} 
+                            increment={incrementPage} 
+                            decrement={decrementPage} 
+                        />
                     </div> :
                     <p className="m-auto md:pb-8">Select a Topic</p>
                 }

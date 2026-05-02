@@ -49,12 +49,21 @@ export default function GeneralReview() {
             <TopicMenu topicDescriptionsList={topicCardDescriptions} selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 md:items-start w-full gap-y-5">
                 {
-                    !isLoadingReviewCounts && reviewCounts && <QuestionSidebar topicCounts={reviewCounts.filter((entry) => selectedTopics.includes(entry.topic))} fetchQuestion={handleQuestionSelection} selectedQuestionTopic={questionTopic} selectedQuestionNumber={questionNumber} reviewProgress={progressTracker} />
+                    !isLoadingReviewCounts && reviewCounts && 
+                    <QuestionSidebar 
+                        topicCounts={reviewCounts.filter((entry) => selectedTopics.includes(entry.topic))} fetchQuestion={handleQuestionSelection} 
+                        selectedQuestionTopic={questionTopic} 
+                        selectedQuestionNumber={questionNumber} 
+                        reviewProgress={progressTracker} 
+                    />
                 }
                 {
                     !isLoadingQuestions && reviewQuestions?.length === 1 && 
                     <div className="w-9/10 mx-auto">
-                        <MultipleChoiceCard question={reviewQuestions[0]} updateProgress={updateProgress} />
+                        <MultipleChoiceCard 
+                            question={reviewQuestions[0]} 
+                            updateProgress={updateProgress} 
+                        />
                     </div>
                 }
             </div>
