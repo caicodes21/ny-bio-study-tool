@@ -10,16 +10,24 @@ def parse_sql_queries(query_filepath: str) -> dict:
         queries = file.readlines()
         queries_by_name = {}
         
-        current_query_name = ""
+        current_query_name = None
+        current_query_definition = []
         for line in queries:
             if len(line.strip()) > 0:
 
                 if "-- name:" in line:
+
+                    if current_query_name and len(current_query_definition):
+                        queries_by_name[current_query_name] = " ".join(current_query_definition)
+
                     current_query_name = line.split("-- name:")[1].strip()
+                    current_query_definition = []
                 
                 else:
-                    query_definition = line.strip()
-                    queries_by_name[current_query_name] = query_definition
+                    current_query_definition.append(line.strip())
+
+        if len(current_query_definition):
+            queries_by_name[current_query_name] = " ".join(current_query_definition)
 
         return queries_by_name
     
@@ -29,7 +37,19 @@ query_filepath = "./sql_queries/practice_clusters.sql"
 _queries = parse_sql_queries(query_filepath)
 
 async def get_cluster_info(pool: asyncpg.Pool):
-    return await pool.fetch(_queries["get_cluster_info"])
+    records = await pool.fetch(_queries["get_cluster_info"])
+
+    cluster_info = []
+    for cluster in records:
+        cluster_info.append({
+            "cluster_number": cluster["cluster_number"],
+            "title": cluster["title"],
+            "topic_list": cluster["topic_list"],
+            "multiple_choice_count": cluster["multiple_choice_count"],
+            "constructed_response_count": cluster["constructed_response_count"]
+        })
+    
+    return cluster_info
 
 async def get_cluster_by_number(pool: asyncpg.Pool, number: int):
     cluster = await pool.fetchrow(_queries["get_cluster_by_number"], number)
