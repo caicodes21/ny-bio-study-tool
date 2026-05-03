@@ -19,26 +19,30 @@ function MCDataTable({columnNames, rowValues}: DataTable) {
 
     return (
         <table className="text-center border border-black">
-            <tr className="border-b">
-                {columnNames.map((col) => <th key={`${col}`} className="border-r">{col}</th>)}
-            </tr>
-            {
-                rowValues.map((row) => {
+            <thead>
+                <tr className="border-b">
+                    {columnNames.map((col) => <th key={`${col}`} className="border-r">{col}</th>)}
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    rowValues.map((row) => {
 
-                    const [rowNum, cellValues] = [...row]
+                        const [rowNum, cellValues] = [...row]
 
-                    return (
-                        <tr key={`row-${rowNum}`} className="border-b">
-                            {
-                                cellValues.map((val, idx) => 
-                                <td key={`row-${rowNum}-col-${idx+1}`} className="border-r">
-                                    {val}
-                                </td>)
-                            }
-                        </tr>
-                    )
-                })
-            }
+                        return (
+                            <tr key={`row-${rowNum}`} className="border-b">
+                                {
+                                    cellValues.map((val, idx) => 
+                                    <td key={`row-${rowNum}-col-${idx+1}`} className="border-r">
+                                        {val}
+                                    </td>)
+                                }
+                            </tr>
+                        )
+                    })
+                }
+            </tbody>
         </table>
     )
 

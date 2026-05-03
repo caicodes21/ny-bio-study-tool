@@ -61,7 +61,7 @@ export default function PracticeClusters() {
                     handleClusterSelection={handleClusterSelection}
                 />
                 {
-                    practiceClusters?.length && <ClusterDisplay practiceCluster={practiceClusters[0]} />
+                    practiceClusters?.length && <ClusterDisplay practiceCluster={practiceClusters[0]} /> && <ClusterDisplay practiceCluster={practiceClusters[0]}/>
                 }
             </div>
 

@@ -48,7 +48,7 @@ export interface ClusterFigure extends ClusterSectionBase {
   description: string
 }
 
-export interface ClusterImage {
+export interface ClusterImage extends ClusterFigure {
   figureType: "image",
   url: string,
   sources: string[]
@@ -84,12 +84,15 @@ export interface ClusterConstructedResponse extends ClusterSectionBase {
 }
 
 
+export type ClusterSection = ClusterTitle | ClusterText | ClusterImage | ClusterGraph | ClusterTable | ClusterMultipleChoice | ClusterConstructedResponse
+
+
 export interface PracticeCluster {
   clusterNumber: number,
   title: string,
   topicList: BiologyTopic[],
   standardsAssessed: StandardCodes[],
-  sectionsList: (ClusterTitle | ClusterText | ClusterImage | ClusterGraph | ClusterTable | ClusterMultipleChoice | ClusterConstructedResponse)[]
+  sectionsList: ClusterSection[]
 }
 
 

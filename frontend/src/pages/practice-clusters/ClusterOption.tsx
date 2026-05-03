@@ -15,7 +15,7 @@ export default function ClusterOption({
 
     return (
         <div 
-            className="flex flex-col border-b last:border-0 border-border p-2 gap-4"
+            className="flex flex-col border-b last:border-0 border-border px-2 py-5 gap-4"
             style={{
                 background: cluster.clusterNumber === selectedCluster ? "#F2F1EE" : undefined
             }}

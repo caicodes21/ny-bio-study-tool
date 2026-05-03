@@ -117,12 +117,12 @@ async def get_cluster_by_number(pool: asyncpg.Pool, number: int):
                 for row in data_table["row_values"]:
                     row_values.append([row["row_number"], [row["column_values"][col] for col in column_names]])
                 row_values = sorted(row_values)
-                current_section["data_table"] = {
+                current_section["dataTable"] = {
                     "columnNames": column_names,
                     "rowValues": row_values
                 }
             else:
-                current_section["data_table"] = None
+                current_section["dataTable"] = None
 
         sections_list.append(current_section)
     
