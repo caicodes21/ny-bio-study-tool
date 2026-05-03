@@ -9,7 +9,7 @@ export const biologyTopicDescriptions = [
     },
     {
         sectionTitle: "Matter and Energy in Organisms and Ecosystems",
-        sectionBody: "The circulation of energy and matter is facilitated by natural processes, including photosynthesis and cellular respiration. Carbon, an essential element, cycles throughout the world through a myriad of chemical processes."
+        sectionBody: "The circulation of energy and matter is facilitated by natural processes, including photosynthesis and cellular respiration. Organic compounds can be broken down into smaller molecules to build new compounds."
     },
     {
         sectionTitle: "Interdependent Relationships in Ecosystems",
@@ -22,6 +22,10 @@ export const biologyTopicDescriptions = [
     {
         sectionTitle: "Natural Selection and Evolution",
         sectionBody: "Organisms with better adapted traits will more likely survive and reproduce. The emergence of adaptations from genetic variation and the inheritance of the adaptations over generations are the core mechanisms behind evolution."
+    },
+    {
+        sectionTitle: "Earth's Systems",
+        sectionBody: "Carbon is an essential element for all life on Earth. The carbon cycle describes the flow of carbon throughout the four major spheres: atmosphere, biosphere, hydrosphere, and geosphere. Human actions are impacted the natural flow of carbon among the four spheres."
     }
 ]
 
@@ -32,7 +36,7 @@ export const clusterDescriptions = [
     },
     {
         sectionTitle: "What is a Model?",
-        sectionBody: "A model provides information of a biological topic, concept, or principle. It can be as simple as a chemical equation of photosynthesis or as complex as a detailed carbon cycle diagram illustrating the flow of carbon throughout the air, water, ground, and living communities. If it can convey biology-related information, it's considered a model."
+        sectionBody: "The exam clusters can include models. A model provides information of a biological topic, concept, or principle. It can be as simple as a chemical equation of photosynthesis or as complex as a detailed carbon cycle diagram illustrating the flow of carbon throughout the air, water, ground, and living communities. If it can convey biology-related information, it's considered a model."
     },
     {
         sectionTitle: "Why is Literacy Important?",

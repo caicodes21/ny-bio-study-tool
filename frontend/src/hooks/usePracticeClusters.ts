@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { fetchPracticeCluster } from '../services/practiceClustersServices'
 
-export function usePracticeClusters(clusterNumbers: number[]) {
+export function usePracticeClusters() {
 
   const [practiceClusters, setPracticeClusters] = useState<any[] | null>(null)
   const [isLoadingPracticeClusters, setIsLoadingPracticeClusters] = useState(true)
   const [practiceClustersError, setPracticeClustersError] = useState(null)
 
-  useEffect(() => {
-    Promise.all(clusterNumbers.map((number) => fetchPracticeCluster(number)))
-      .then(setPracticeClusters)
-      .catch(setPracticeClustersError)
-      .finally(() => setIsLoadingPracticeClusters(false))
-  }, [])
+  async function fetchPracticeClusters(filters: number[]) {
+    setIsLoadingPracticeClusters(true)
+    try {
+      const clusters = await Promise.all(filters.map((num) => fetchPracticeCluster(num)))
+      setPracticeClusters(clusters)
+    } catch (err: any) {
+      setPracticeClustersError(err)
+    } finally {
+      setIsLoadingPracticeClusters(false)
+    }
+  }
 
-  return { practiceClusters, isLoadingPracticeClusters, practiceClustersError }
+  return { practiceClusters, isLoadingPracticeClusters, practiceClustersError, fetchPracticeClusters }
   
 }

@@ -1,9 +1,10 @@
+import React from "react"
 import { useState } from "react"
 import Chevron from "./Chevron"
 
 interface AccordionSection {
     sectionTitle: string
-    sectionBody: string
+    sectionBody: React.ReactNode
 }
 
 interface AccordionProps {
@@ -46,7 +47,7 @@ export default function Accordion({ sections, title }: AccordionProps) {
                             transition: "max-height 0.5s ease"
                         }}
                     >
-                        <p className="px-5 py-3">{section.sectionBody}</p>
+                        <div className="px-5 py-3">{section.sectionBody}</div>
                     </div>
                 </div>
             ))}

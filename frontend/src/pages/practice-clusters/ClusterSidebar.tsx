@@ -1,7 +1,8 @@
-import QuestionOption from "./QuestionOption"
 import { useEffect, useState } from "react"
+import type { ClusterInfo } from "../../types"
+import ClusterOption from "./ClusterOption"
 
-const NUMBER_OF_QUESTIONS_PER_PAGE = 10
+const NUMBER_OF_CLUSTERS_PER_PAGE = 5
 
 interface PageButtonsProps {
     currentPage: number,
@@ -40,43 +41,34 @@ function PageButtons({currentPage, maxPage, increment, decrement}: PageButtonsPr
     )
 }
 
-interface TopicCount {
-    topic: string,
-    count: number
-}
-
 interface QuestionSideBarProps {
-    topicCounts: TopicCount[],
-    fetchQuestion: (topic: string, number: number) => void,
-    selectedQuestionTopic: string | null,
-    selectedQuestionNumber: number | null,
-    reviewProgress: Record<string, number[]>
+    clustersInfo: ClusterInfo[],
+    selectedCluster: number | null,
+    handleClusterSelection: (clusterNumber: number) => void
 }
 
-export default function QuestionSidebar({ 
-    topicCounts, 
-    fetchQuestion, 
-    selectedQuestionTopic, 
-    selectedQuestionNumber, 
-    reviewProgress 
+
+export default function ClusterSidebar({ 
+    clustersInfo,
+    selectedCluster,
+    handleClusterSelection
 }: QuestionSideBarProps) {
 
     const [currentPage, setCurrentPage] = useState(0)
     const [maxPage, setMaxPage] = useState(0)
-    const [totalQuestionCount, setTotalQuestionCount] = useState(0)
+    const [totalClusterCount, setTotalClusterCount] = useState(0)
 
     useEffect(() => {
 
-        const totalCount = topicCounts.reduce((accumulator, entry) => accumulator + entry.count, 0)
-        setTotalQuestionCount(totalCount)
-        const newMaxPage = Math.ceil(totalCount / NUMBER_OF_QUESTIONS_PER_PAGE) - 1
+        setTotalClusterCount(clustersInfo.length)
+        const newMaxPage = Math.ceil(clustersInfo.length / NUMBER_OF_CLUSTERS_PER_PAGE) - 1
         setMaxPage(newMaxPage)
-        
-        if (currentPage && currentPage > newMaxPage) {
+
+        if (currentPage > newMaxPage) {
             setCurrentPage(Math.max(0, newMaxPage))
         }
 
-    }, [topicCounts])
+    }, [clustersInfo])
     
     const incrementPage = (currentPage: number) => {
         if (currentPage + 1 <= maxPage) setCurrentPage(currentPage + 1)
@@ -87,28 +79,29 @@ export default function QuestionSidebar({
     }
 
     return (
-        <div className="flex flex-col border border-border w-9/10 md:w-5/8 mx-auto rounded-lg">
-            <div className="flex justify-between font-semibold bg-surface rounded-t-lg border-b border-border p-2">
-                <h1 className="">Questions</h1>
-                <h1 className={`${totalQuestionCount ? undefined : "hidden"}`}>{`${totalQuestionCount} total`}</h1>
+        <div className="flex flex-col w-9/10 mx-auto rounded-lg border border-border">
+            <div 
+                className="flex justify-between text-lg font-semibold bg-surface border-b border-border rounded-t-lg p-2 h-12">
+                <h1 className="">Clusters</h1>
+                <h1 className={`${totalClusterCount ? undefined : "hidden"}`}>{`${totalClusterCount} total`}</h1>
             </div>
-            <div className="flex flex-col flex-1 min-h-50">
+            <div 
+                className="flex flex-col flex-1 rounded-b-lg"
+            >
                 {
-                    totalQuestionCount ?
+                    clustersInfo.length ?
                     <div>
-                        {topicCounts.flatMap((entry) =>
-                            Array.from({ length: entry.count }, (_, idx) => (
-                                <QuestionOption
-                                    key={`${entry.topic}-question-${idx}`}
-                                    topic={entry.topic}
-                                    questionNumber={idx + 1}
-                                    fetchQuestion={fetchQuestion}
-                                    selectedQuestionTopic={selectedQuestionTopic}
-                                    selectedQuestionNumber={selectedQuestionNumber}
-                                    reviewProgress={reviewProgress}
+                        {clustersInfo
+                            .slice(currentPage * NUMBER_OF_CLUSTERS_PER_PAGE, currentPage * NUMBER_OF_CLUSTERS_PER_PAGE + NUMBER_OF_CLUSTERS_PER_PAGE)
+                            .map((cluster) => (
+                                <ClusterOption
+                                    key={cluster.title}
+                                    cluster={cluster}
+                                    selectedCluster={selectedCluster}
+                                    handleClusterSelection={handleClusterSelection}
                                 />
                             ))
-                        ).slice(currentPage * NUMBER_OF_QUESTIONS_PER_PAGE, currentPage * NUMBER_OF_QUESTIONS_PER_PAGE + NUMBER_OF_QUESTIONS_PER_PAGE)}
+                        }
                         <PageButtons
                             currentPage={currentPage}
                             maxPage={maxPage}
@@ -116,7 +109,7 @@ export default function QuestionSidebar({
                             decrement={decrementPage}
                         />
                     </div> :
-                    <p className="m-auto md:pb-8">Select a Topic</p>
+                    <p className="m-auto p-8">Select a Topic</p>
                 }
             </div>
 

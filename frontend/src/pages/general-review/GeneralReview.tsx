@@ -2,8 +2,8 @@ import MultipleChoiceCard from "../../components/question-cards/MultipleChoiceCa
 import { useGeneralReviewCounts } from "../../hooks/useGeneralReviewCounts"
 import { useGeneralReviewQuestions } from "../../hooks/useGeneralReviewQuestions"
 import QuestionSidebar from "./QuestionSidebar"
-import TopicMenu from "./TopicMenu"
-import { getReviewTracker, topicCardDescriptions } from "./utils"
+import TopicMenu from "../../components/topic-menu/TopicMenu"
+import { getReviewTracker } from "./utils"
 import { useState } from "react"
 import updateReviewTracker from "./utils"
 
@@ -22,12 +22,10 @@ export default function GeneralReview() {
 
     const handleTopicSelection = (topic: string) => {
 
-        const snakeCaseTopic = topic.toLowerCase().replaceAll(" ", "_")
-
-        if (!selectedTopics.includes(snakeCaseTopic)) {
-            setSelectedTopics([...selectedTopics, snakeCaseTopic])
+        if (!selectedTopics.includes(topic)) {
+            setSelectedTopics([...selectedTopics, topic])
         } else {
-            setSelectedTopics(selectedTopics.filter((val) => val !== snakeCaseTopic))
+            setSelectedTopics(selectedTopics.filter((val) => val !== topic))
         }
     }
 
@@ -46,7 +44,7 @@ export default function GeneralReview() {
 
     return (
         <div className="flex flex-col items-center">
-            <TopicMenu topicDescriptionsList={topicCardDescriptions} selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
+            <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 md:items-start w-full gap-y-5">
                 {
                     !isLoadingReviewCounts && reviewCounts && 

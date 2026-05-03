@@ -88,7 +88,8 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
                                 style={{
                                     pointerEvents: isSubmitted ? "none" : "auto",
                                     background: isSubmitted && selectedAnswer == correctAnswer && choice === correctAnswer ? "#9FE593" : choice === selectedAnswer ? "#F2F1EE" : undefined,
-                                    borderWidth: isSubmitted && selectedAnswer == correctAnswer && choice === correctAnswer ? "0px" : undefined
+                                    borderWidth: isSubmitted && selectedAnswer == correctAnswer && choice === correctAnswer ? "0px" : undefined,
+                                    textDecoration: isSubmitted && choice === selectedAnswer && selectedAnswer !== correctAnswer ? "line-through" : undefined
                                 }}
                                 onClick={() => setSelectedAnswer(choice)}
                                 disabled={isSubmitted}

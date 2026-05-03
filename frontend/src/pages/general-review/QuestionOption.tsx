@@ -1,5 +1,5 @@
+import TopicPill from "../../components/TopicPill"
 import Star from "./Star"
-import { snakeToCamelTopics, questionOptionPillColors } from "./utils"
 
 interface QuestionOptionProps {
     topic: string,
@@ -33,20 +33,10 @@ export default function QuestionOption({
                 <p>{`Question ${questionNumber}`}</p>
                 {
                     correctlyAnsweredQuestions?.includes(questionNumber) &&
-                    <Star 
-                        strokeColor={questionOptionPillColors.find((option) => option.topic === topic)?.borderColor}
-                        fillColor={questionOptionPillColors.find((option) => option.topic === topic)?.bodyColor}
-                    />
+                    <Star topic={topic}/>
                 }
             </div>
-            <span
-                className="border rounded-full p-1 text-xs truncate max-w-50 md:max-w-100"
-                style={{
-                    color: questionOptionPillColors.find((option) => option.topic === topic)?.borderColor,
-                    background: questionOptionPillColors.find((option) => option.topic === topic)?.bodyColor,
-                    borderColor: questionOptionPillColors.find((option) => option.topic === topic)?.borderColor
-                }}
-            >{snakeToCamelTopics[topic]}</span>
+            <TopicPill topic={topic}/>
         </button>
     )
 }
