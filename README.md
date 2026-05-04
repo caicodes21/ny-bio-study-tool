@@ -1,33 +1,78 @@
-# New York Biology Regents Study Tool
+# New York State Biology Regents Study Tool
 
 A study tool for the NYS Biology Regents exam
 
 ## Context
 
-In 2025, New York State implemented a new Biology Regents exam as part of its ongoing efforts to align its science standards to the Next Generation Science Standards. Unlike the old Living Environment Regents exam, the new Biology Regents exam assesses student learning through cluster questions. A cluster is a set of reading passages and visuals about a real-world phenomenon, and students connect the given information to answer biology-themed questions. This exam is a drastic change from the older exam, which emphasized rote memorization of facts and concepts. Due to this change, many teachers and students feel uncertain about how to prepare for this new exam.
+In 2025, New York State implemented a new Biology Regents exam as part of its ongoing efforts to align its science standards to the Next Generation Science Standards. Unlike the old Living Environment Regents exam, the new Biology Regents exam assesses student learning through clusters. A cluster is a set of reading passages and visuals about a real-world phenomenon, and students connect the given information to answer biology questions. This exam is a drastic change from the older exam, which emphasized rote memorization of facts and concepts. Due to this change, many teachers and students feel uncertain about how to prepare for this new exam.
 
 The goal of this tool is to provide support for students through two main ways:
 
 * general review questions that reinforce foundational biology concepts
-* mock exam questions that resemble cluster questions from the actual exam
+* practice cluster questions that resemble the questions from the actual exam
+
+## User-Friendly UI
+
+Users can easily navigate between general review and practice cluster questions.
+![Homepage](https://res.cloudinary.com/dcuiyqf9w/image/upload/h_400/w_auto/q_auto/f_auto/v1777930069/homepage_rhq8lc.png)
+
+Users can choose from a diverse set of AI-generated biology review questions.
+![General Review](https://res.cloudinary.com/dcuiyqf9w/video/upload/c_scale,h_400/e_loop/dl_350,vs_1.5s/general_review_ddgxdh.gif)
+
+The practice clusters are made with AI-assistance. Users can answer multiple-choice and constructed-response questions about real-world phenomena.
+![Practice Clusters](https://res.cloudinary.com/dcuiyqf9w/video/upload/c_scale,h_400/e_loop/dl_350,vs_1.5s/practice_clusters_x0y9u7.gif)
 
 ## App Architecture
 
+                    ┌─────────────────────┐
+                    │      FRONTEND       │
+                    │  Vite · React       │
+                    │  Tailwind · Chart.js│
+                    └────────┬────────────┘
+                             │
+                    ┌────────▼────────────┐
+                    │     API LAYER       │
+                    │      FastAPI        │
+                    └────────┬────────────┘
+                             │
+                    ┌────────▼────────────┐
+                    │     DATABASE        │
+                    │  Neon · PostgreSQL  │
+                    └─────────────────────┘
+                             ▲
+                             │ 
+                    ┌────────┴────────────┐
+                    │  QUESTION GENERATION│
+                    │ Chainlit · LangChain│
+                    │       · LLM         │
+                    └─────────────────────┘
+
 | Component | Tools |
 | --------- | ----- |
-| Frontend | Vite, React |
+| Frontend | Vite, React, Tailwind, Chart.js |
 | Database | Neon (Postgres) |
-| Middle API Layer | FastAPI |
-| Question Generation | LangChain, large language models |
+| API Layer | FastAPI |
+| Question Generation | Chainlit and LangChain app with MCP server to the database |
+
+The frontend communicates with the FastAPI layer to fetch questions from the PostgreSQL database hosted on Neon. The Chainlit app can be connected to the MCP server to fetch information related to the NYS biology curriculum. This way, the LLM models can generate relevant questions. The MCP server allows the use of other AI tools, such as Claude Desktop, to generate questions and save them in the database.
 
 ## Planned Steps
 
-This tool is currently in development. Here are the immediate steps in the near future:
+This tool is currently in development. Here are the steps for the near future:
 
-1. Build a pipeline for generating review questions and mock exam questions using large language models.
-2. Build a database to store the generated questions.
-3. Set up a middle API layer to handle user requests from the frontend.
-4. Build a frontend for users to practice questions.
+* Improve the quality of the general review questions and practice clusters.
+* Add helpful study tools (e.g. highlighter).
+* Add features to the FastAPI layer to avoid database fetch rate limits.
+
+## Completed Steps
+
+~~Build a pipeline for generating review questions and mock exam questions using large language models.~~
+
+~~Build a database to store the generated questions.~~
+
+~~Set up a middle API layer to handle user requests from the frontend.~~
+
+~~Build a frontend for users to practice questions.~~
 
 ## License
  
