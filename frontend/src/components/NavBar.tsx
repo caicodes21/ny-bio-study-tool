@@ -16,37 +16,50 @@ export default function Navbar() {
                 <span className="block h-0.5 bg-text w-0 group-hover:w-full transition-all duration-300 mx-auto" />
             </Link>
 
-            <div className="relative">
-                <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-1 px-4 py-2 text-text rounded-md text-lg hover:cursor-pointer"
-                >
-                    Study
-                    <Chevron rotate={dropdownOpen} width={12} height={12}/>
-                </button>
+            <div className="flex items-center">
 
-            {dropdownOpen && (
-                <>
-                    <div className="fixed inset-0 z-0" onClick={() => setDropdownOpen(false)} />
-                    <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-md shadow-md z-10">
-                        <Link
-                            to="/general-review"
-                            onClick={() => setDropdownOpen(false)}
-                            className="block px-4 py-2 text-md text-text hover:bg-border"
-                        >
-                            General Review
-                        </Link>
-                        <Link
-                            to="/practice-clusters"
-                            onClick={() => setDropdownOpen(false)}
-                            className="block px-4 py-2 text-md text-text hover:bg-border"
-                        >
-                            Practice Clusters
-                        </Link>
-                    </div>
-                </>
-            )}
+                <div className="relative">
+                    <button
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                        className="flex items-center gap-1 px-2 py-2 text-text text-lg hover:cursor-pointer"
+                    >
+                        Study
+                        <Chevron rotate={dropdownOpen} width={12} height={12}/>
+                    </button>
+
+                    {dropdownOpen && (
+                        <>
+                            <div className="fixed inset-0 z-0" onClick={() => setDropdownOpen(false)} />
+                            <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-md shadow-md z-10">
+                                <Link
+                                    to="/general-review"
+                                    onClick={() => setDropdownOpen(false)}
+                                    className="block px-4 py-2 text-md text-text hover:bg-border"
+                                >
+                                    General Review
+                                </Link>
+                                <Link
+                                    to="/practice-clusters"
+                                    onClick={() => setDropdownOpen(false)}
+                                    className="block px-4 py-2 text-md text-text hover:bg-border"
+                                >
+                                    Practice Clusters
+                                </Link>
+                            </div>
+                        </>
+                    )}
+
+                </div>
+
+                <Link 
+                    to="/about" 
+                    className="px-4 py-2 text-lg text-text"
+                >
+                    About
+                </Link>
             </div>
+
+
         </nav>
     )
 }

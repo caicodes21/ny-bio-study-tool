@@ -10,10 +10,6 @@
 }
 
 
-:root {
-
-}
-
 @keyframes wrongAnswerShake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-8px); }

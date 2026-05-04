@@ -6,6 +6,7 @@ import TopicMenu from "../../components/topic-menu/TopicMenu"
 import { getReviewTracker } from "./utils"
 import { useState } from "react"
 import updateReviewTracker from "./utils"
+import AIDisclaimer from "../../components/AIDisclaimer"
 
 export default function GeneralReview() {
 
@@ -44,6 +45,9 @@ export default function GeneralReview() {
 
     return (
         <div className="flex flex-col items-center">
+
+            <AIDisclaimer />
+            
             <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 md:items-start w-full gap-y-5">
                 {

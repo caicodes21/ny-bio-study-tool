@@ -2,7 +2,6 @@ import type { ClusterConstructedResponse, ClusterGraph, ClusterImage, ClusterMul
 import FigureImage from "./FigureImage"
 import FigureTable from "./FigureTable"
 import FigureBar from "./FigureBar"
-
 import Text from "./Text"
 import Title from "./Title"
 import FigureLine from "./FigureLine"

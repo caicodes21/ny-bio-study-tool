@@ -55,6 +55,7 @@ export default function ConstructedResponseCard({question}: ConstructedResponseC
                 ref={ref} 
                 onInput={handleResponse}
                 disabled={isSubmitted}
+                placeholder="Enter your response"
             />
 
             {

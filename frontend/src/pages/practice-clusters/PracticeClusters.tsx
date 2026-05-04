@@ -5,6 +5,7 @@ import ClusterSidebar from "./ClusterSidebar"
 import type { ClusterInfo } from "../../types"
 import { usePracticeClusters } from "../../hooks/usePracticeClusters"
 import ClusterDisplay from "./ClusterDisplay"
+import AIDisclaimer from "../../components/AIDisclaimer"
 
 function filterClusterInfo(clustersInfo: ClusterInfo[] | null, targetTopics: string[]) {
 
@@ -53,6 +54,9 @@ export default function PracticeClusters() {
 
     return (
         <div className="flex flex-col items-center">
+
+            <AIDisclaimer />
+            
             <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-10 grid grid-cols-1 md:grid-cols-[30%_70%] md:items-start w-full gap-y-5">
                 <ClusterSidebar 
