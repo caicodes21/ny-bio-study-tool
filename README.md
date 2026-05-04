@@ -17,7 +17,7 @@ Users can easily navigate between general review and practice cluster questions.
 ![Homepage](https://res.cloudinary.com/dcuiyqf9w/image/upload/h_400/w_auto/q_auto/f_auto/v1777930069/homepage_rhq8lc.png)
 
 Users can choose from a diverse set of AI-generated biology review questions.
-![General Review](https://res.cloudinary.com/dcuiyqf9w/video/upload/c_scale,h_400/e_loop/dl_350,vs_1.5s/general_review_ddgxdh.gif)
+![General Review](https://res.cloudinary.com/dcuiyqf9w/video/upload/c_scale,h_400/e_loop/dl_350,vs_1.5s/general_review_ebzcae.gif)
 
 The practice clusters are made with AI-assistance. Users can answer multiple-choice and constructed-response questions about real-world phenomena.
 ![Practice Clusters](https://res.cloudinary.com/dcuiyqf9w/video/upload/c_scale,h_400/e_loop/dl_350,vs_1.5s/practice_clusters_x0y9u7.gif)
