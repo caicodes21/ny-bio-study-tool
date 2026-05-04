@@ -24,8 +24,8 @@ function filterClusterInfo(clustersInfo: ClusterInfo[] | null, targetTopics: str
 
 export default function PracticeClusters() {
 
-    const { clustersInfo, isLoadingClustersInfo, clustersInfoError } = usePracticeClustersInfo()
-    const { practiceClusters, isLoadingPracticeClusters, practiceClustersError, fetchPracticeClusters } = usePracticeClusters()
+    const { clustersInfo, clustersInfoError } = usePracticeClustersInfo()
+    const { practiceClusters, practiceClustersError, fetchPracticeClusters } = usePracticeClusters()
     if (clustersInfoError) console.log(clustersInfoError)
     if (practiceClustersError) console.log(practiceClustersError)
 
@@ -54,7 +54,7 @@ export default function PracticeClusters() {
     return (
         <div className="flex flex-col items-center">
             <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
-            <div className="mt-5 grid grid-cols-1 md:grid-cols-[30%_70%] md:items-start w-full gap-y-5">
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-[30%_70%] md:items-start w-full gap-y-5">
                 <ClusterSidebar 
                     clustersInfo={filterClusterInfo(clustersInfo, selectedTopics)}
                     selectedCluster={selectedCluster}

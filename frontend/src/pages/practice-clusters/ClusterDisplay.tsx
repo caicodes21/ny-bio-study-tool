@@ -1,9 +1,11 @@
-import type { ClusterFigure, ClusterGraph, ClusterImage, ClusterSection, ClusterTable, PracticeCluster } from "../../types"
+import type { ClusterGraph, ClusterImage, ClusterSection, ClusterTable, PracticeCluster } from "../../types"
 import FigureImage from "./FigureImage"
 import FigureTable from "./FigureTable"
+import FigureBar from "./FigureBar"
 
 import Text from "./Text"
 import Title from "./Title"
+import FigureLine from "./FigureLine"
 
 interface ClusterDisplayProps {
     practiceCluster: PracticeCluster
@@ -16,6 +18,10 @@ function parseClusterFigure(section: ClusterImage | ClusterGraph | ClusterTable)
             return <FigureImage clusterImage={section} />
         case "table":
             return <FigureTable clusterTable={section}/>
+        case "bar":
+            return <FigureBar clusterBar={section} />
+        case "line":
+            return <FigureLine clusterLine={section}/>
     }
 }
 
@@ -41,7 +47,7 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             {
                 practiceCluster.sectionsList.map((section) => {
                     return (
-                        <div key={`cluster-section-${section.sectionNumber}`}>
+                        <div key={`cluster-section-${section.sectionNumber}`} className="w-full">
                             {parseClusterSection(section)}
                         </div>
                     )
