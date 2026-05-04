@@ -47,6 +47,7 @@ class ClusterText(BaseModel):
     sentences_list: list[str] = Field(description="A list of the sentences in a section of text", min_length=1)
 
 class ClusterFigure(BaseModel):
+    figure_title: str = Field(description="Title of the figure")
     figure_number: int = Field(description="The number of the figure, starting from 1", ge=1)
     figure_type: Literal["image", "table", "line", "bar"] = Field(description="The type of the figure")
     description: str = Field(description="A short description of the figure and its relationship to the cluster")

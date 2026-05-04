@@ -45,6 +45,7 @@ export interface ClusterText extends ClusterSectionBase {
 
 export interface ClusterFigure extends ClusterSectionBase {
   sectionType: "figure",
+  figureTitle: string,
   description: string
 }
 

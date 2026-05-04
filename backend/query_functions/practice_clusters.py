@@ -103,6 +103,7 @@ async def get_cluster_by_number(pool: asyncpg.Pool, number: int):
 
         elif section_type == "figure":
 
+            current_section["figureTitle"] = section_content["figure_title"]
             current_section["figureType"] = section_content["figure_type"]
             current_section["figureNumber"] = section_content["figure_number"]
             current_section["description"] = section_content["description"]
