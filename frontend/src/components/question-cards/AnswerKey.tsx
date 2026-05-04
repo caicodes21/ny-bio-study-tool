@@ -3,27 +3,27 @@ import Chevron from "../Chevron"
 interface AnswerExplanationProps {
     show: boolean
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
-    text: string
+    text: React.ReactNode
 }
 
-export default function AnswerExplanation({show, setShow, text}: AnswerExplanationProps) {
+export default function AnswerKey({show, setShow, text}: AnswerExplanationProps) {
     return (
         <>
             <button
                 onClick={() => setShow(!show)}
                 className="flex items-center gap-1"
             >
-                Explanation
+                Answer Key
                 <Chevron rotate={show} width={12} height={12}/>
             </button>
             <div
                 style={{
-                    maxHeight: show ? "200px" : "0px",
+                    maxHeight: show ? "500px" : "0px",
                     overflow: "hidden",
                     transition: "max-height 0.5s ease"
                 }}
             >
-                <p>{text}</p>
+                {text}
             </div>
         </>
     )

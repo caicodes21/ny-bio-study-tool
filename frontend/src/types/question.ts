@@ -4,13 +4,14 @@ export interface MultipleChoiceQuestion {
     topic?: string,
     questionNumber: number,
     question: string,
-    dataTable: DataTable | null,
+    dataTable?: DataTable | null,
     correctAnswer: string,
     wrongChoices: string[],
     answerExplanation: string
 }
 
-export interface ConstructedResponseQuestions {
+export interface ConstructedResponseQuestion {
+    questionNumber: number,
     question: string,
     gradingCriteria: string,
     acceptableAnswers: string[]

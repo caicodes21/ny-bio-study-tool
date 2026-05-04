@@ -6,7 +6,8 @@ interface FigureImageProps {
 
 export default function FigureImage({ clusterImage }: FigureImageProps) {
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-5">
+            <h1 className="font-semibold text-xl underline">{clusterImage.figureTitle}</h1>
             <img
                 src={clusterImage.url}
                 alt={clusterImage.description}

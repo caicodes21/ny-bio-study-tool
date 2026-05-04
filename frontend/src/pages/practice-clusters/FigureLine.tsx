@@ -101,12 +101,14 @@ export default function FigureLine({ clusterLine }: FigureLineProps) {
   }, [clusterLine]);
 
   return (
-    <div
-      style={{
-        overflowX: "auto"
-      }}
-    >
-      <canvas ref={canvasRef} width={width} height={height} />
+    <div className="flex flex-col items-center gap-5 w-full">
+      <h1 className="font-semibold text-xl underline text-center">{clusterLine.figureTitle}</h1>
+      <div
+        className="max-w-full overflow-x-auto"
+      >
+        <canvas ref={canvasRef} width={width} height={height} />
+      </div>
     </div>
+
   )
 }

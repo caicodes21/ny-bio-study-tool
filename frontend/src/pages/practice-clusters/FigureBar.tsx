@@ -12,7 +12,6 @@ export default function FigureBar({ clusterBar }: FigureBarProps) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { width, height } = useMemo(() => {
-    console.log(window.innerWidth)
     if (window.innerWidth < 650) return { width: 400, height: 350 }
     if (window.innerWidth < 1024) return { width: 500, height: 350 }
     return { width: 700, height: 400 }
@@ -71,13 +70,15 @@ export default function FigureBar({ clusterBar }: FigureBarProps) {
   }, [clusterBar]);
 
   return (
-    <div
-      style={{
-        overflowX: "auto"
-      }}
-    >
-      <canvas ref={canvasRef} width={width} height={height} />
+    <div className="flex flex-col items-center gap-5 w-full">
+      <h1 className="font-semibold text-xl underline text-center">{clusterBar.figureTitle}</h1>
+      <div
+        className="max-w-full overflow-x-auto"
+      >
+        <canvas ref={canvasRef} width={width} height={height} />
+      </div>
     </div>
+
 
   )
 }

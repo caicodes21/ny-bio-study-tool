@@ -25,14 +25,14 @@ export const biologyTopicDescriptions = [
     },
     {
         sectionTitle: "Earth's Systems",
-        sectionBody: "Carbon is an essential element for all life on Earth. The carbon cycle describes the flow of carbon throughout the four major spheres: atmosphere, biosphere, hydrosphere, and geosphere. Human actions are impacted the natural flow of carbon among the four spheres."
+        sectionBody: "Carbon is an essential element for all life on Earth. The carbon cycle describes the flow of carbon throughout the four major spheres: atmosphere, biosphere, hydrosphere, and geosphere."
     }
 ]
 
 export const clusterDescriptions = [
     {
         sectionTitle: "What is a Cluster?",
-        sectionBody: "The Regents Biology exam is broken into sections known as clusters. Each cluster contains reading passages and visuals that provide context about a specific real-world biological phenomenon. The cluster contains a mix of multiple-choice and constructed-response questions that assess biology knowledge within the context of the phenomenon."
+        sectionBody: "The Regents Biology exam is broken into sections known as clusters. Each cluster contains reading passages and visuals that provide context about a specific biological phenomenon. The cluster contains a mix of multiple-choice and constructed-response questions that assess biology knowledge within the context of the phenomenon."
     },
     {
         sectionTitle: "What is a Model?",
@@ -40,14 +40,49 @@ export const clusterDescriptions = [
     },
     {
         sectionTitle: "Why is Literacy Important?",
-        sectionBody: "The Regents exam consists of several clusters - each one has reading passages and questions with technical terms. The exam expects students to not only have a firm understanding of high school biology, but also the reading and writing skills to apply their biology understanding."
+        sectionBody: "The Regents exam consists of several clusters - each one has reading passages and questions with technical terms. The exam expects students to not only have a firm understanding of biology, but also the reading and writing skills to apply their biology understanding."
     },
     {
         sectionTitle: "What Topics are Covered?",
-        sectionBody: "The exam covers the following topics: Structure and Function, Matter and Energy in Organisms and Ecosystems, Interdependent Relationships in Ecosystems, Inheritance and Variation of Traits, Natural Selection and Evolution, Earth's Systems, and Engineering, Technology, and the Applications of Science. Please note that BoroBio does not have general review questions specifically for the last two topics."
+        sectionBody: "The exam covers the following topics: Structure and Function, Matter and Energy in Organisms and Ecosystems, Interdependent Relationships in Ecosystems, Inheritance and Variation of Traits, Natural Selection and Evolution, Earth's Systems, and Engineering, Technology, and the Applications of Science."
     },
     {
         sectionTitle: "How Many Questions are in the Exam?",
-        sectionBody: "The NYS Education Department has announced that the exam is expected to have 9 to 11 clusters with a total of 45 to 55 questions."
+        sectionBody: 
+        <p>
+            The NYS Education Department has stated that the exam is expected to have 9 to 11 clusters with a total of 45 to 55 questions. For more info, see the official Educator Guide to the Regents Examination in Life Science: Biology<span> </span>
+            <a 
+                href="https://www.nysed.gov/sites/default/files/programs/state-assessment/educator-guide-life-science-2024.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                (click here)
+            </a>
+            .
+        </p>
+    },
+    {
+        sectionTitle: "How Can I Find Official Regents Materials?",
+        sectionBody: 
+        <p>
+            The NYS Education Department releases copies of the Regents exam online for public view <span> </span>
+            <a
+                href="https://www.nysedregents.org/life_science_biology/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                (click here)
+            </a>
+            . In 2024 and 2025, the department also released sample clusters to prepare teachers and students for the exam <span> </span>
+            <a
+                href="https://www.nysed.gov/state-assessment/life-science-biology"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                (click here)
+            </a>
+            . 
+            Please note that questions on BoroBio are <strong>not</strong> official questions released by the NYS Education Department.
+        </p>
     }
 ]

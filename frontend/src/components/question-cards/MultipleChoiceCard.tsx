@@ -1,11 +1,11 @@
 import type { MultipleChoiceQuestion } from "../../types/question";
 import { useState } from "react";
-import AnswerExplanation from "./AnswerExplanation";
+import AnswerKey from "./AnswerKey";
 import type { DataTable } from "../../types";
 
 interface MultipleChoiceCardProps {
     question: MultipleChoiceQuestion,
-    updateProgress: (topic: string, number: number) => void
+    updateProgress?: (topic: string, number: number) => void
 }
 
 function shuffleChoices(choices: string[]) {
@@ -57,12 +57,14 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [showExplanation, setShowExplanation] = useState(false)
+    const [isCorrect, setIsCorrect] = useState(false)
 
     const handleAnswer = (choice: string) => {
         setSelectedAnswer(choice)
         setIsSubmitted(true)
+        setIsCorrect(choice === correctAnswer)
 
-        if (topic && selectedAnswer === correctAnswer) {
+        if (updateProgress && topic && selectedAnswer === correctAnswer) {
             updateProgress(topic, questionNumber)
         }
     }
@@ -71,14 +73,17 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
         setSelectedAnswer(null)
         setIsSubmitted(false)
         setShowExplanation(false)
+        setIsCorrect(false)
     }
 
     return (
-        <div className="border border-border h-full w-full rounded-lg">
+        <div 
+            className={`border border-border h-full w-full md:w-9/10 mx-auto rounded-lg ${isSubmitted && !isCorrect ? "wrongAnswerShake" : ""}`}
+        >
             <div 
                 className="flex flex-col p-5 border-b border-border bg-surface w-full rounded-t-lg"
             >
-                {topic && <p className="font-semibold">{`Question ${questionNumber}`}</p>}
+                <p className="font-semibold text-lg">Question {question.questionNumber}</p>
                 <p>{question.question}</p>
                 {dataTable && <MCDataTable columnNames={dataTable.columnNames} rowValues={dataTable.rowValues} />}
             </div>
@@ -125,8 +130,8 @@ export default function MultipleChoiceCard({question, updateProgress}: MultipleC
                 }
                 {
                     isSubmitted && selectedAnswer === correctAnswer ?
-                    <div className="ml-5 mb-2">
-                        <AnswerExplanation show={showExplanation} setShow={setShowExplanation} text={answerExplanation} />
+                    <div className="mx-5 mb-2">
+                        <AnswerKey show={showExplanation} setShow={setShowExplanation} text={answerExplanation} />
                     </div> :
                     <></>
                 }

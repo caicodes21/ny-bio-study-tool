@@ -1,4 +1,4 @@
-import type { ClusterGraph, ClusterImage, ClusterSection, ClusterTable, PracticeCluster } from "../../types"
+import type { ClusterConstructedResponse, ClusterGraph, ClusterImage, ClusterMultipleChoice, ClusterSection, ClusterTable, PracticeCluster } from "../../types"
 import FigureImage from "./FigureImage"
 import FigureTable from "./FigureTable"
 import FigureBar from "./FigureBar"
@@ -6,6 +6,8 @@ import FigureBar from "./FigureBar"
 import Text from "./Text"
 import Title from "./Title"
 import FigureLine from "./FigureLine"
+import MultipleChoiceCard from "../../components/question-cards/MultipleChoiceCard"
+import ConstructedResponseCard from "../../components/question-cards/ConstructedResponseCard"
 
 interface ClusterDisplayProps {
     practiceCluster: PracticeCluster
@@ -25,6 +27,16 @@ function parseClusterFigure(section: ClusterImage | ClusterGraph | ClusterTable)
     }
 }
 
+function parseClusterQuestion(section: ClusterMultipleChoice | ClusterConstructedResponse) {
+
+    switch (section.questionType) {
+        case "multiple-choice":
+            return <MultipleChoiceCard question={section}/>
+        case "constructed-response":
+            return <ConstructedResponseCard question={section} />
+    }
+}
+
 function parseClusterSection(section: ClusterSection) {
 
     switch (section.sectionType) {
@@ -36,6 +48,9 @@ function parseClusterSection(section: ClusterSection) {
         
         case "figure":
             return parseClusterFigure(section)
+        
+        case "question":
+            return parseClusterQuestion(section)
 
     }
 }

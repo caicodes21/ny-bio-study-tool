@@ -18,7 +18,7 @@ export default function GeneralReview() {
     const [selectedTopics, setSelectedTopics] = useState<string[]>([])
     const [questionTopic, setQuestionTopic] = useState<string | null>(null)
     const [questionNumber, setQuestionNumber] = useState<number | null>(null)
-    const [progressTracker, setProgressTracker] = useState<Record<string, number[]>>({})
+    const [progressTracker, setProgressTracker] = useState<Record<string, number[]>>(getReviewTracker())
 
     const handleTopicSelection = (topic: string) => {
 
