@@ -18,7 +18,7 @@ export default function AIDisclaimer() {
                 <div className="bg-surface border border-border rounded-xl shadow-xl max-w-md w-full p-8 flex flex-col gap-5">
                     <h2 className="text-2xl font-semibold text-center">AI-Generated Content</h2>
                     <p className="text-text text-center leading-relaxed">
-                        The questions in this tool are generated with the help of AI and may contain errors.
+                        The questions on this website are generated with the help of AI and may contain errors.
                     </p>
                     <button
                         onClick={() => handleAcknowledgement()}

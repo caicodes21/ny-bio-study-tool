@@ -46,7 +46,9 @@ export default function About() {
                     The questions on this website are designed with the help of AI models, which can make mistakes. This website does not guarantee the accuracy of any of its content.
                 </p>
 
-                <h3 className="mt-5 font-semibold text-gray-600">Additional Information about the NYS Biology Regents Exam</h3>
+                <span className="h-0.5 w-11/12 my-5 mx-auto bg-border rounded-md"></span>
+
+                <h3 className="font-semibold text-gray-600">Information about the NYS Biology Regents Exam</h3>
 
                 <p>
                     The NYS Biology Regents exam assesses students' learning of high school-level life science concepts. It is offered three times every year: January, June, and August.

@@ -10,20 +10,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
 from typing import Optional
 from setup import get_conn_pool
+from dotenv import load_dotenv
 from utils import *
+import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.conn_pool = await get_conn_pool()
     yield
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=allowed_origins,
+    allow_methods=["GET"]
 )
 
 
