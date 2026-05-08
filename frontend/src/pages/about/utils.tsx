@@ -73,12 +73,7 @@ export const examDescriptions = [
                 (click here)
             </a>
             . 
-            Please note that questions on BoroBio are <strong>not</strong> official questions released by the NYS Education Department.
+            Please note that questions on PluriStudy are <strong>not</strong> official questions released by the NYS Education Department.
         </p>
-    },
-    {
-        sectionTitle: "Is the Exam Required for Graduation?",
-        sectionBody: "Traditionally, a high school student must pass a number of Regents exams to earn high school graduation credit in NYS. The Regents exam requirement is being phased out. Students who start 9th grade in the 2027-2028 school year will not be required to pass the Regents exams to graduate. However, the Regents exams will continue to be administered."
     }
-
 ]

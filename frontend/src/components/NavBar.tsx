@@ -10,8 +10,8 @@ export default function Navbar() {
         <nav className="flex items-center justify-between px-4 py-2 bg-surface border-b border-border">
             <Link to="/" className="group flex flex-col items-center">
                 <div className="flex flex-row text-2xl font-semibold">
-                    <h1>Boro</h1>
-                    <h1 className="text-green-800">Bio</h1>
+                    <h1 className="text-green-800">Pluri</h1>
+                    <h1>Study</h1>
                 </div>
                 <span className="block h-0.5 bg-text w-0 group-hover:w-full transition-all duration-300 mx-auto" />
             </Link>
