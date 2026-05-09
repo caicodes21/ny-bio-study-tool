@@ -61,7 +61,7 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             {
                 practiceCluster.sectionsList.map((section) => {
                     return (
-                        <div key={`cluster-section-${section.sectionNumber}`} className="w-full">
+                        <div key={`cluster-${practiceCluster.clusterNumber}-${section.sectionType}-${section.sectionNumber}`} className="w-full">
                             {parseClusterSection(section)}
                         </div>
                     )
