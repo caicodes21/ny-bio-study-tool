@@ -14,10 +14,14 @@ interface AccordionProps {
 
 export default function Accordion({ sections, title }: AccordionProps) {
 
-    const [openIndex, setOpenIndex] = useState<number | null>(null)
+    const [openIndices, setOpenIndices] = useState<number[]>([])
 
     const handleClick = (idx: number) => {
-        setOpenIndex(openIndex === idx ? null : idx)
+        if (!openIndices.includes(idx)) {
+            setOpenIndices([...openIndices, idx])
+        } else {
+            setOpenIndices(openIndices.filter((i) => i !== idx))
+        }
     }
 
     return (
@@ -38,11 +42,11 @@ export default function Accordion({ sections, title }: AccordionProps) {
                         onClick={() => handleClick(idx)}
                     >
                         <span>{section.sectionTitle}</span>
-                        <Chevron rotate={openIndex === idx} width={12} height={12}/>
+                        <Chevron rotate={openIndices.includes(idx)} width={12} height={12}/>
                     </button>
                     <div
                         style={{
-                            maxHeight: openIndex === idx ? "500px" : "0px",
+                            maxHeight: openIndices.includes(idx) ? "500px" : "0px",
                             overflow: "hidden",
                             transition: "max-height 0.5s ease"
                         }}

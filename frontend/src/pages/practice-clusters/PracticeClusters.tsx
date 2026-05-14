@@ -5,7 +5,8 @@ import ClusterSidebar from "./ClusterSidebar"
 import type { ClusterInfo } from "../../types"
 import { usePracticeClusters } from "../../hooks/usePracticeClusters"
 import ClusterDisplay from "./ClusterDisplay"
-import AIDisclaimer from "../../components/AIDisclaimer"
+import AgreementModal from "../../components/AgreementModal"
+import { useAgreement } from "../../hooks/useAgreement"
 
 function filterClusterInfo(clustersInfo: ClusterInfo[] | null, targetTopics: string[]) {
 
@@ -30,6 +31,7 @@ export default function PracticeClusters() {
     if (clustersInfoError) console.log(clustersInfoError)
     if (practiceClustersError) console.log(practiceClustersError)
 
+    const [agreed, setAgreed] = useAgreement()
     const [selectedTopics, setSelectedTopics] = useState<string[]>([])
     const [selectedCluster, setSelectedCluster] = useState<number | null>(null)
 
@@ -53,10 +55,10 @@ export default function PracticeClusters() {
     }, [selectedCluster])
 
     return (
-        <div className="flex flex-col items-center">
+        <div>
+            {!agreed && <AgreementModal onAgree={() => setAgreed()} />}
+            <div className={`flex flex-col items-center${!agreed ? " blur-sm pointer-events-none select-none" : ""}`}>
 
-            <AIDisclaimer />
-            
             <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-10 grid grid-cols-1 md:grid-cols-[30%_70%] md:items-start w-full gap-y-5">
                 <ClusterSidebar 
@@ -69,6 +71,7 @@ export default function PracticeClusters() {
                 }
             </div>
 
+        </div>
         </div>
     )
 }

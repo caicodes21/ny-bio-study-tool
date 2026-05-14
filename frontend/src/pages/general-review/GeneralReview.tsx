@@ -6,7 +6,8 @@ import TopicMenu from "../../components/topic-menu/TopicMenu"
 import { getReviewTracker } from "./utils"
 import { useState } from "react"
 import updateReviewTracker from "./utils"
-import AIDisclaimer from "../../components/AIDisclaimer"
+import AgreementModal from "../../components/AgreementModal"
+import { useAgreement } from "../../hooks/useAgreement"
 
 export default function GeneralReview() {
 
@@ -16,6 +17,7 @@ export default function GeneralReview() {
     if (reviewCountsError) console.log(reviewCountsError)
     if (questionsError) console.log(questionsError)
 
+    const [agreed, setAgreed] = useAgreement()
     const [selectedTopics, setSelectedTopics] = useState<string[]>([])
     const [questionTopic, setQuestionTopic] = useState<string | null>(null)
     const [questionNumber, setQuestionNumber] = useState<number | null>(null)
@@ -44,10 +46,10 @@ export default function GeneralReview() {
     }
 
     return (
-        <div className="flex flex-col items-center">
+        <div>
+            {!agreed && <AgreementModal onAgree={() => setAgreed()} />}
+            <div className={`flex flex-col items-center${!agreed ? " blur-sm pointer-events-none select-none" : ""}`}>
 
-            <AIDisclaimer />
-            
             <TopicMenu selectedTopics={selectedTopics} handleSelection={handleTopicSelection}/>
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 md:items-start w-full gap-y-5">
                 {
@@ -71,6 +73,7 @@ export default function GeneralReview() {
             </div>
 
 
+        </div>
         </div>
     )
 }

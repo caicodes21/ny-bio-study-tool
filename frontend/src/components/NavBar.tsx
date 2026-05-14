@@ -9,8 +9,8 @@ export default function Navbar() {
     return (
         <nav className="flex items-center justify-between px-4 py-2 bg-surface border-b border-border">
             <Link to="/" className="group flex flex-col items-center">
-                <div className="flex flex-row text-2xl font-semibold">
-                    <h1 className="text-green-800">Pluri</h1>
+                <div className="flex flex-row text-2xl font-semibold transition hover:-translate-y-1 duration-300 ease-in-out">
+                    <h1 className="text-green-800 font-bold">Pluri</h1>
                     <h1>Study</h1>
                 </div>
                 <span className="block h-0.5 bg-text w-0 group-hover:w-full transition-all duration-300 mx-auto" />
@@ -30,7 +30,7 @@ export default function Navbar() {
                     {dropdownOpen && (
                         <>
                             <div className="fixed inset-0 z-0" onClick={() => setDropdownOpen(false)} />
-                            <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-md shadow-md z-10">
+                            <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-md shadow-md z-20">
                                 <Link
                                     to="/general-review"
                                     onClick={() => setDropdownOpen(false)}

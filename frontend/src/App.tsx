@@ -5,6 +5,8 @@ import Footer from "./components/Footer"
 import About from "./pages/about/About"
 import GeneralReview from "./pages/general-review/GeneralReview"
 import PracticeClusters from "./pages/practice-clusters/PracticeClusters"
+import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy"
+import TermsOfUse from "./pages/terms-of-use/TermsOfUse"
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
             <Route path="/general-review" element={<GeneralReview />} />
             <Route path="/practice-clusters" element={<PracticeClusters />} />
             <Route path="/about" element={<About />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-use" element={<TermsOfUse />} />
           </Routes>
         </main>
 

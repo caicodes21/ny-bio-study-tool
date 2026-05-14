@@ -24,7 +24,7 @@ export const biologyTopicDescriptions = [
 export const examDescriptions = [
     {
         sectionTitle: "What is a Cluster?",
-        sectionBody: "The Biology Regents exam is broken into sections known as clusters. Each cluster contains reading passages and visuals that provide context about a specific biological phenomenon. The cluster contains a mix of multiple-choice and constructed-response questions that assess biology knowledge within the context of the phenomenon."
+        sectionBody: "The exam is broken into sections known as clusters. Each cluster contains reading passages and visuals that provide context about a specific biological phenomenon. The cluster contains a mix of multiple-choice and constructed-response questions that assess biology knowledge within the context of the phenomenon."
     },
     {
         sectionTitle: "What is a Model?",

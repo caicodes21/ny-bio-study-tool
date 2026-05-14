@@ -20,7 +20,7 @@ export default function Home() {
                 </div>
 
                 <p className="text-xl text-center">
-                    Prepare for the New York State Biology Regents exam
+                    Prepare for the New York State Life Science: Biology Regents exam
                 </p>
                 <ExamDates />
             </div>
