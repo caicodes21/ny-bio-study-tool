@@ -101,7 +101,7 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
 
         const rect = selectedRange.getBoundingClientRect()
         const viewportWidth = window.visualViewport?.width ?? window.innerWidth
-        const toolbarYOffset = 60
+        const toolbarYOffset = 40
         const toolbarWidth = 100
         const margin = 8
 
@@ -113,7 +113,7 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             left = margin
         }
 
-        setToolbarPos({ top: rect.top - toolbarYOffset, left })
+        setToolbarPos({ top: rect.top + toolbarYOffset, left })
     }, [])
 
     const handleSelectionSettled = useCallback(() => {
