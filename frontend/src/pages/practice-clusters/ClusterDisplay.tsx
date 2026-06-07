@@ -1,5 +1,5 @@
 import type { ClusterConstructedResponse, ClusterGraph, ClusterImage, ClusterMultipleChoice, ClusterSection, ClusterTable, PracticeCluster } from "../../types"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import FigureImage from "./FigureImage"
 import FigureTable from "./FigureTable"
 import FigureBar from "./FigureBar"
@@ -67,6 +67,8 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
     const [highlights, setHighlights] = useState<HighlightRange[]>([])
     const [toolbarPos, setToolbarPos] = useState<{ top: number, left: number } | null>(null)
 
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
     const makeHighlightRange = (startContainer: Node, endContainer: Node, start: number, end: number, color: string) => {
         const newRange = document.createRange()
         newRange.setStart(startContainer, start)
@@ -74,10 +76,10 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
         return {
             color: color,
             range: newRange
-        } as HighlightRange
+        }
     }
 
-    const handleMouseUp = () => {
+    const evaluateSelection = useCallback(() => {
 
         const selection = window.getSelection()
         if (!selection || selection.isCollapsed) {
@@ -85,9 +87,9 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             return
         }
 
-        const newRange = selection.getRangeAt(0)
-        const container = newRange.commonAncestorContainer
-        const isWithinSingleParagraph = container.nodeType === Node.TEXT_NODE || 
+        const selectedRange = selection.getRangeAt(0)
+        const container = selectedRange.commonAncestorContainer
+        const isWithinSingleParagraph = container.nodeType === Node.TEXT_NODE ||
             (container.nodeType === Node.ELEMENT_NODE && (container as Element).tagName === "P")
 
         if (!isWithinSingleParagraph) {
@@ -95,23 +97,39 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             return
         }
 
-        setNewRange(newRange)
+        setNewRange(selectedRange)
 
-        const rect = newRange.getBoundingClientRect()
+        const rect = selectedRange.getBoundingClientRect()
+        const viewportWidth = window.visualViewport?.width ?? window.innerWidth
         const toolbarYOffset = 60
         const toolbarWidth = 100
         const margin = 8
 
         let left = rect.left
-        if (left + toolbarWidth > window.innerWidth - margin) {
-            left = window.innerWidth - toolbarWidth - margin
+        if (left + toolbarWidth > viewportWidth - margin) {
+            left = viewportWidth - toolbarWidth - margin
         }
         if (left < margin) {
             left = margin
         }
 
         setToolbarPos({ top: rect.top - toolbarYOffset, left })
-    }
+    }, [])
+
+    const handleSelectionSettled = useCallback(() => {
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+        debounceRef.current = setTimeout(evaluateSelection, 500)
+    }, [evaluateSelection])
+
+    useEffect(() => {
+        document.addEventListener("selectionchange", handleSelectionSettled)
+        document.addEventListener("touchend", handleSelectionSettled)
+        return () => {
+            document.removeEventListener("selectionchange", handleSelectionSettled)
+            document.removeEventListener("touchend", handleSelectionSettled)
+            if (debounceRef.current) clearTimeout(debounceRef.current)
+        }
+    }, [handleSelectionSettled])
 
     const applyHighlights = (color: string) => {
         if (newRange) {
@@ -171,7 +189,6 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
             setHighlights(filteredHighlights)
             setNewRange(null)
             setToolbarPos(null)
-
         }
     }
 
@@ -183,7 +200,6 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
         CSS.highlights.set("yellow-highlight", new Highlight(...yellowRanges))
         CSS.highlights.set("blue-highlight", new Highlight(...blueRanges))
         CSS.highlights.set("green-highlight", new Highlight(...greenRanges))
-
 
     }, [highlights])
 
@@ -202,16 +218,11 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
         )}
         <div
             className="flex flex-col justify-center items-center w-9/10 mx-auto gap-5"
-            onMouseUp={handleMouseUp}
         >
             <div
                 className="self-start"
             >
-                <div className="flex gap-x-2">
-                    <h1 className="font-lg font-bold">Directions: </h1>
-                    <p>Read the following passage and interpret the model(s) to answer the practice questions.</p>
-                </div>
-
+                <p><strong>Directions: </strong>Read the following passage and interpret the model(s) to answer the practice questions.</p>
                 <p><strong>Highlighter Tool: </strong>You can double-click and drag to highlight text.</p>
             </div>
             {
