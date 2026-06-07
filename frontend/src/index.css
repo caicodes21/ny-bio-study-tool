@@ -31,3 +31,15 @@
 .wrongAnswerShake {
     animation: wrongAnswerShake 0.5s ease-in-out;
 }
+
+::highlight(green-highlight) {
+    background-color: #AEEADE;
+}
+
+::highlight(yellow-highlight) {
+    background-color: #FCF6B3;
+}
+
+::highlight(blue-highlight) {
+    background-color: #B3D5ED;
+}
