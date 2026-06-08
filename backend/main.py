@@ -2,24 +2,28 @@ from query_functions.general_review import get_question_counts, get_question_by_
 from query_functions.practice_clusters import get_cluster_info, get_cluster_by_number
 from query_functions.exam_dates import get_exam_dates
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+import asyncio
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import ValidationError
-from typing import Optional
 from setup import get_conn_pool
-from dotenv import load_dotenv
-from utils import *
+from utils import TopicEnum
 import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.conn_pool = await get_conn_pool()
     yield
+    try:
+        await asyncio.wait_for(app.state.conn_pool.close(), timeout=10)
+    except TimeoutError:
+        app.state.conn_pool.terminate()
 
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+
+allowed_origins = [origin for origin in os.getenv("ALLOWED_ORIGINS", "").split(",") if len(origin)]
+
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
@@ -39,7 +43,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to BoroBio!"}
+    return {"message": "Welcome to PluriStudy!"}
 
 
 @app.get("/general-review")
@@ -47,19 +51,19 @@ async def general_review(request: Request, topic: TopicEnum | None = None, numbe
 
     pool = request.app.state.conn_pool
 
+    if (topic is None) != (number is None):
+        raise HTTPException(status_code=400, detail="Missing either topic or question number") 
+
     try:
         if topic is None and number is None:
             return await get_question_counts(pool)
         
         elif topic is not None and number is not None:
             return await get_question_by_topic_and_number(pool, topic, number)
-        
-        else:
-            return {}
-            
+                    
     except Exception as e:
-        return {"msg": "Internal server error"}
-
+        print(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/practice-clusters")
 async def practice_clusters(request: Request, number: int | None = None):
@@ -75,8 +79,7 @@ async def practice_clusters(request: Request, number: int | None = None):
     
     except Exception as e:
         print(e)
-        return {"msg": "Internal server error"}
-
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/exam-dates")
 async def exam_dates(request: Request):
@@ -88,4 +91,4 @@ async def exam_dates(request: Request):
     
     except Exception as e:
         print(e)
-        return {"msg": "Internal server error"}
+        raise HTTPException(status_code=500, detail="Internal server error")
