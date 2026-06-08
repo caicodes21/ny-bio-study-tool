@@ -100,25 +100,13 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
         setNewRange(selectedRange)
 
         const rect = selectedRange.getBoundingClientRect()
-        const viewportWidth = window.visualViewport?.width ?? window.innerWidth
-        const toolbarYOffset = 40
-        const toolbarWidth = 100
-        const margin = 8
-
-        let left = rect.left
-        if (left + toolbarWidth > viewportWidth - margin) {
-            left = viewportWidth - toolbarWidth - margin
-        }
-        if (left < margin) {
-            left = margin
-        }
-
-        setToolbarPos({ top: rect.top + toolbarYOffset, left })
+        const toolbarYOffset = -80
+        setToolbarPos({ top: rect.top + toolbarYOffset, left: rect.left })
     }, [])
 
     const handleSelectionSettled = useCallback(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current)
-        debounceRef.current = setTimeout(evaluateSelection, 500)
+        debounceRef.current = setTimeout(evaluateSelection, 200)
     }, [evaluateSelection])
 
     useEffect(() => {
@@ -182,10 +170,12 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
                 
             }
 
-            filteredHighlights.push({
-                color: color, 
-                range: newRange
-            })
+            if (color !== "clear") {
+                filteredHighlights.push({
+                    color: color, 
+                    range: newRange
+                })
+            }
             setHighlights(filteredHighlights)
             setNewRange(null)
             setToolbarPos(null)

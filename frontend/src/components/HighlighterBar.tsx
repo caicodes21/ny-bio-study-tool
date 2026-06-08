@@ -1,11 +1,11 @@
 function HighligterIcon({width}: {width: number}) {
 
     return (
-        <svg width={width} viewBox="0 0 120 220" role="img" xmlns="http://www.w3.org/2000/svg">
+        <svg width={width} viewBox="-40 0 160 220" role="img" xmlns="http://www.w3.org/2000/svg">
             <title>Highlighter tip icon</title>
-            <desc>A black and white illustration of a highlighter marker tip, shown at a slight angle</desc>
+            <desc>A black and white illustration of a highlighter marker tip, angled at 20 degrees</desc>
 
-            <g transform="translate(60,110) rotate(-20) translate(-40,-100)">
+            <g transform="translate(60,110) rotate(-60) translate(-40,-100)">
                 <rect x="12" y="5" width="56" height="90" rx="6" fill="white" stroke="black" strokeWidth="2.5"/>
                 <rect x="12" y="5" width="56" height="18" rx="0" fill="black"/>
                 <rect x="12" y="23" width="56" height="4" fill="black" stroke="none"/>
@@ -23,21 +23,37 @@ function HighligterIcon({width}: {width: number}) {
     )
 }
 
+function EraserIcon({width}: {width: number}) {
+
+    return (
+        <svg width={width} viewBox="210 110 260 180" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title>Eraser toolbar icon angled clean</title>
+        <desc>A simple black and white eraser icon tilted at 20 degrees for a UI toolbar.</desc>
+
+        <g transform="translate(340, 200) rotate(20)">
+            <rect x="-110" y="-55" width="150" height="110" rx="8" fill="white" stroke="black" strokeWidth="8"/>
+            <rect x="40" y="-55" width="80" height="110" rx="8" fill="black" stroke="black" strokeWidth="8"/>
+        </g>
+        </svg>
+    )
+}
+
 const HIGHLIGHTER_COLORS = [
     {
         color: "yellow",
-        borderHexCode: "#DCA237",
         highlightHexCode: "#FCF6B3"
     },
     {
         color: "blue",
-        borderHexCode: "#3070AD",
         highlightHexCode: "#B3D5ED"
     },
     {
         color: "green",
-        borderHexCode: "#469C76",
         highlightHexCode: "#AEEADE"
+    },
+    {
+        color: "clear",
+        highlightHexCode: "#FFF"
     }
 ]
 
@@ -48,27 +64,43 @@ interface HighlighterBarProps {
 export default function HighlighterBar({ applyHighlights }: HighlighterBarProps) {
     return (
         <div
-            className="flex flex-row justify-center items-center border border-border bg-background rounded-full h-[50px] gap-x-5 px-5 bg-gray"
+            className="flex flex-row justify-center items-center border border-border bg-background rounded-full h-[50px] gap-x-2 px-2 bg-gray"
         >
             <HighligterIcon width={20} />
             <span
                 className="h-7/10 w-[2px] bg-border"
             />
             <div 
-                className="flex flex-row gap-x-5"
+                className="flex flex-row gap-x-2"
             >
                 {HIGHLIGHTER_COLORS.map((option) => {
+
+                    if (option.color !== "clear") {
+                        return (
+                            <button
+                                key={option.color}
+                                className="h-8 w-8 rounded-full cursor-pointer border-gray-500 border-2 hover:border-black"
+                                style={{
+                                    background: option.highlightHexCode   
+                                }}
+                                onClick={() => applyHighlights(option.color)}
+                            />
+                        )
+                    }
+
                     return (
                         <button
                             key={option.color}
-                            className="h-8 w-8 rounded-full cursor-pointer hover:border-gray-500 hover:border-2"
+                            className="flex flex-row justify-center items-center border-gray-500 border h-8 w-8 rounded-full cursor-pointer"
                             style={{
                                 background: option.highlightHexCode   
                             }}
                             onClick={() => applyHighlights(option.color)}
                         >
+                            <EraserIcon width={20}/>
                         </button>
                     )
+
                 })}
             </div>
         </div>
