@@ -100,7 +100,7 @@ export default function ClusterDisplay({ practiceCluster }: ClusterDisplayProps)
         setNewRange(selectedRange)
 
         const rect = selectedRange.getBoundingClientRect()
-        const toolbarYOffset = -80
+        const toolbarYOffset = 40
         setToolbarPos({ top: rect.top + toolbarYOffset, left: rect.left })
     }, [])
 
