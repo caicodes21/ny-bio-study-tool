@@ -3,7 +3,7 @@ export default function TermsOfUse() {
         <div className="flex flex-col justify-center items-center">
 
             <h1 className="mt-5 text-xl">Terms of Use</h1>
-            <p className="italic text-gray-600">Last updated: May 13, 2026</p>
+            <p className="italic text-gray-600">Last updated: June 22, 2026</p>
 
             <div className="flex flex-col gap-2 mt-5 w-8/10">
 
@@ -16,7 +16,7 @@ export default function TermsOfUse() {
                 <h3 className="font-semibold text-gray-600">About This Site</h3>
 
                 <p>
-                    This website is a free, publicly available, and independent educational study tool created to support students in preparing for the New York State Life Science: Biology Regents examination. This website has no affiliation, endorsement, or sponsorship from the New York State Education Department (NYSED), the New York State Board of Regents, or any other educational institution or government agency. References to the Regents Examination, which is a registered program of the New York State Education Department, are purely descriptive and are used solely to indicate the subject matter this website is designed to help students study.
+                    This website is a free, publicly available, and independent educational study tool created to support students in preparing for the New York State Life Science: Biology Regents examination. This website has no affiliation, endorsement, or sponsorship from the New York State Education Department, the New York State Board of Regents, or any other educational institution or government agency. References to the Regents Examination, which is a registered program of the New York State Education Department, are purely descriptive and are used solely to indicate the subject matter this website is designed to help students study.
                 </p>
 
                 <h3 className="font-semibold text-gray-600">Permitted Use</h3>
@@ -45,7 +45,7 @@ export default function TermsOfUse() {
                 <h3 className="font-semibold text-gray-600">Third-Party Services</h3>
 
                 <p>
-                    This website relies on third-party hosting providers to operate. The creator is not responsible for the availability, performance, or data practices of those providers.
+                    This website relies on third-party hosting providers to operate. The creator is not responsible for the availability, performance, or data practices of the providers.
                 </p>
 
                <h3 className="font-semibold text-gray-600">Changes to These Terms</h3>
@@ -53,7 +53,6 @@ export default function TermsOfUse() {
                 <p>
                     These terms may be updated if this website's infrastructure or features change. Any updates will be reflected on this page with a revised date.
                 </p>
-
 
             </div>
         </div>
