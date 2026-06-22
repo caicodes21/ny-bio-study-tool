@@ -26,6 +26,14 @@ export default function About() {
                     PluriStudy is created to help students prepare for this new exam by providing general review questions and practice exam materials. Hope you enjoy using it!
                 </p>
 
+                <h3 className="font-semibold text-gray-600">Disclaimer</h3>
+
+                <p>
+                    This website has no affiliation, endorsement, or sponsorship from the New York State Education Department, the New York State Board of Regents, or any other educational institution or government agency. 
+                    It is an independent study resource.
+                </p>
+
+
                 <h3 className="font-semibold text-gray-600">General Review Questions</h3>
 
                 <p>

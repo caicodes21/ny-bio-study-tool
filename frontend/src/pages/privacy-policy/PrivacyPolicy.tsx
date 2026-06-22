@@ -3,7 +3,7 @@ export default function PrivacyPolicy() {
         <div className="flex flex-col justify-center items-center">
 
             <h1 className="mt-5 text-xl">Privacy Policy</h1>
-            <p className="italic text-gray-600">Last updated: May 13, 2026</p>
+            <p className="italic text-gray-600">Last updated: June 22, 2026</p>
 
             <div className="flex flex-col gap-2 mt-5 w-8/10">
 
@@ -16,7 +16,7 @@ export default function PrivacyPolicy() {
                 <h3 className="font-semibold text-gray-600">Data Privacy</h3>
 
                 <p>
-                    This website does not collect any personal information. There are no user accounts, no login system, and no feature for transmitting personal data. This website is connected to a database that stores the study materials available on this website. The database is NOT designed to store any personal information, including, but not limited to, name, age, sex, grade level, and email.
+                    This website does not collect any personal information. There are no user accounts, no login system, and no feature for transmitting personal data. This website is connected to a database that stores the study materials available on this website. This specific database is NOT designed to store any personal information, including, but not limited to, name, age, sex, grade level, and email.
                 </p>
 
                 <p>
