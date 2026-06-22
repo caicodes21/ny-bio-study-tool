@@ -2,10 +2,9 @@ interface QuestionTypeCardProps {
     questionType: string,
     description: string,
     svgPath: string
-    destinationURL: string
 }
 
-export default function QuestionTypeCard({ questionType, description, svgPath, destinationURL }: QuestionTypeCardProps) {
+export default function QuestionTypeCard({ questionType, description, svgPath }: QuestionTypeCardProps) {
 
     return (
         <div 

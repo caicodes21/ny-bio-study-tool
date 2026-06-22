@@ -29,7 +29,6 @@ export default function Home() {
                         questionType="General Review" 
                         description={generalReviewDescription} 
                         svgPath={GeneralReviewSVG} 
-                        destinationURL="/general-review"
                     />
                 </div>
 
@@ -38,13 +37,10 @@ export default function Home() {
                         questionType="Practice Clusters" 
                         description={practiceClusterDescription} 
                         svgPath={PracticeClusterSVG}
-                        destinationURL={"/practice-clusters"}
                     />
                 </div>
 
             </div>
-
-
 
         </div>
     )
