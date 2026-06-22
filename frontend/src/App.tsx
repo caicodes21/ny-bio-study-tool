@@ -7,6 +7,7 @@ import GeneralReview from "./pages/general-review/GeneralReview"
 import PracticeClusters from "./pages/practice-clusters/PracticeClusters"
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy"
 import TermsOfUse from "./pages/terms-of-use/TermsOfUse"
+import PauseModal from "./components/PauseModal"
 
 function App() {
 
@@ -15,6 +16,8 @@ function App() {
       <div className="min-h-screen flex flex-col">
 
         <Navbar />
+
+        <PauseModal />
 
         <main className="flex-1">
           <Routes>

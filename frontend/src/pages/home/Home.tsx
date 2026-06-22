@@ -1,4 +1,3 @@
-import { ExamDates } from "./ExamDates"
 import QuestionTypeCard from "./QuestionTypeCard"
 import { generalReviewDescription, practiceClusterDescription } from "./utils"
 import PracticeClusterSVG from "../../assets/notepad.svg"
@@ -22,7 +21,6 @@ export default function Home() {
                 <p className="text-xl text-center">
                     Prepare for the New York State Life Science: Biology Regents exam
                 </p>
-                <ExamDates />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-15 w-full">
